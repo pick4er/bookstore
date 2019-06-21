@@ -2,17 +2,18 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-module.exports = function configWebpack(props) {
+module.exports = function configClientWebpack(props) {
   const { production = true } = props;
 
   return {
+    target: 'web',
     mode: production ? 'production' : 'development',
     entry: {
-      index: './src/client/index.js',
+      client: ['@babel/polyfill', './client/index.js'],
     },
     output: {
       filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, '..', 'dist'),
+      path: path.resolve(__dirname, '../..', 'build'),
     },
     module: {
       rules: [
@@ -31,7 +32,7 @@ module.exports = function configWebpack(props) {
     plugins: [
       new HtmlWebpackPlugin({
         filename: 'index.html',
-        template: 'src/client/index.html',
+        template: 'client/index.html',
       }),
     ],
   };
