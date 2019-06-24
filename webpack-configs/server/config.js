@@ -1,6 +1,10 @@
 const path = require('path');
 
+const getGlobals = require('../plugins/globals');
 const getExternals = require('../utils/externals');
+const getEnvs = require('../utils/dotenv');
+
+getEnvs();
 
 module.exports = function configServerWebpack(props) {
   const { production = true } = props;
@@ -31,5 +35,8 @@ module.exports = function configServerWebpack(props) {
         },
       ],
     },
+    plugins: [
+      getGlobals(),
+    ],
   };
 };

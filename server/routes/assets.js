@@ -6,7 +6,7 @@ function getMime(filename) {
 }
 
 function getAssets(ctx) {
-  const filename = ctx.filename === '' ? 'index.html' : ctx.filename;
+  const filename = ctx.filename.includes('client') ? ctx.filename : 'index.html';
 
   ctx.set({ 'Content-Type': getMime(filename) });
   ctx.body = fs.createReadStream(`build/${filename}`);

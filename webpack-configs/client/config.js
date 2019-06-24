@@ -2,6 +2,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+const getGlobals = require('../plugins/globals');
+const getEnvs = require('../utils/dotenv');
+
+getEnvs();
+
 module.exports = function configClientWebpack(props) {
   const { production = true } = props;
 
@@ -30,6 +35,7 @@ module.exports = function configClientWebpack(props) {
       ],
     },
     plugins: [
+      getGlobals(),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'client/index.html',
