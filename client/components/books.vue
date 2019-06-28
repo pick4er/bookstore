@@ -1,6 +1,6 @@
 <template>
   <ul>
-    <li v-for="book in books" :key="book.book_id + '-' + book.title">{{ book.title }}</li>
+    <li v-for="book in books" :key="book.book_id + '-' + book.display_name">{{ book.display_name }}</li>
   </ul>
 </template>
 
