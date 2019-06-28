@@ -12,6 +12,7 @@ module.exports = function configServerWebpack(props) {
   return {
     target: 'node',
     mode: production ? 'production' : 'development',
+    context: path.resolve('./'),    
     entry: {
       server: ['@babel/polyfill', './server/index.js'],
     },

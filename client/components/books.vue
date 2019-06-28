@@ -1,6 +1,8 @@
 <template>
-  <ul>
-    <li v-for="book in books" :key="book.book_id + '-' + book.display_name">{{ book.display_name }}</li>
+  <ul :class="$style.list">
+    <li v-for="book in books" :key="book.book_id + '-' + book.display_name">
+      {{ book.display_name }}
+    </li>
   </ul>
 </template>
 
@@ -11,4 +13,7 @@
   }
 </script>
 
-<style></style>
+<style lang="styl" module>
+  .list
+    color $black
+</style>
