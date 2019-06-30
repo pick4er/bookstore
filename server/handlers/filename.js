@@ -6,7 +6,7 @@ export default async function getAssetFilename(ctx, next) {
   );
 
   /* eslint-disable-next-line prefer-destructuring */
-  ctx.filename = path.split('/')[1];
+  ctx.filename = path.split('/')[2];
 
   await next();
 }

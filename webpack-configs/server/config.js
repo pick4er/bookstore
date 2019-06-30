@@ -20,6 +20,7 @@ module.exports = function configServerWebpack(props) {
       filename: '[name].js',
       path: path.resolve(__dirname, '../..', 'build'),
       libraryTarget: 'commonjs',
+      publicPath: process.env.PUBLIC_PATH,
     },
     externals: getExternals(),
     module: {

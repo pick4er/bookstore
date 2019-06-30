@@ -33,6 +33,7 @@ module.exports = function configClientWebpack(props) {
     output: {
       filename: '[name].[contenthash].js',
       path: path.resolve(__dirname, '../..', 'build'),
+      publicPath: process.env.PUBLIC_PATH,
     },
     resolve: {
       alias: {
@@ -52,6 +53,15 @@ module.exports = function configClientWebpack(props) {
             loader: 'vue-loader',
           },
         },
+        {
+          test: /\.(png|jpe?g|woff|ttf)$/,
+          use: {
+            loader: 'file-loader',
+            options: {
+              name: '[name]@[hash:base64:5].[ext]',
+            },
+          }, 
+        },       
         {
           test: /\.styl$/,
           use: [

@@ -1,1 +1,13 @@
 @import 'normalize'
+
+defineFont('Roboto Light', 'Roboto-Light', 300, 'light')
+defineFont('Roboto Regular', 'Roboto-Regular', 400, 'normal')
+defineFont('Roboto Bold', 'Roboto-Bold', 700, 'bold')
+
+*, *:before, *:after
+  box-sizing border-box
+
+html
+  font-family $fontRegular
+  font-size $defaultFontSize
+

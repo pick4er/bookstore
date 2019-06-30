@@ -1,7 +1,7 @@
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 const webpack = require('webpack');
 
-const envs = ['BACKEND_URL'];
+const envs = ['BACKEND_URL', 'PUBLIC_PATH'];
 
 function stringifyEnv(envValue) {
   if (
