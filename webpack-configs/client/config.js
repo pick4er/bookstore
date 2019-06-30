@@ -42,7 +42,7 @@ module.exports = function configClientWebpack(props) {
           'vue/dist/vue.js',
       },
       mainFiles: ['index.js'],
-      extensions: ['.js', '.jsx', '.styl'],
+      extensions: ['.js', '.jsx', '.styl', '.vue'],
       modules: [DIR, 'node_modules'],
     },    
     module: {

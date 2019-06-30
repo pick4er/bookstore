@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import books from 'client/components/books.vue';
+import catalogPage from 'client/pages/catalog';
 
 const data = {
   books: [],
@@ -8,14 +8,14 @@ const data = {
 
 export function changeBooks(nextBooks) {
   data.books = nextBooks;
-}
+};
 
 new Vue({
   el: '#app',
   components: {
-    books,
+    'catalog-page': catalogPage,
   },
   data() {
-    return data
+    return data;
   },
 });

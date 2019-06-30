@@ -9,7 +9,12 @@
 <script>
   export default {
     name: 'books',
-    props: ['books'],
+    props: {
+      books: {
+        type: Array,
+        required: true,
+      },
+    },
   }
 </script>
 
