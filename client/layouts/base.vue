@@ -42,5 +42,6 @@
     flex-grow 1
 
   .footer
+    margin-top x(10)
     flex-shrink 0
 </style>

@@ -2,7 +2,7 @@
   <div :class="$style.footer">
     2019 /&nbsp;
     <custom-link 
-      href="https://ya.ru" 
+      href="http://pick4er.com" 
       :class="$style.link"
     >
       @pick4er
