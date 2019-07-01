@@ -1,13 +1,13 @@
-const path = require('path');
+import path from 'path';
 /* eslint-disable-next-line import/no-extraneous-dependencies */
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 
 const envPaths = {
   production: path.resolve('./', '.env.production'),
   development: path.resolve('./', '.env.development'),
 };
 
-module.exports = function getEnvs() {
+export default function getEnvs() {
   if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: envPaths.production });
   } else {

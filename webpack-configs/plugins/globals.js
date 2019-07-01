@@ -1,7 +1,11 @@
 /* eslint-disable-next-line import/no-extraneous-dependencies */
-const webpack = require('webpack');
+import webpack from 'webpack';
 
-const envs = ['BACKEND_URL', 'PUBLIC_PATH'];
+const envs = [
+  'BACKEND_URL',
+  'PUBLIC_PATH',
+  'DEV_SERVER_PORT',
+];
 
 function stringifyEnv(envValue) {
   if (
@@ -14,11 +18,11 @@ function stringifyEnv(envValue) {
   return JSON.stringify(envValue);
 }
 
-module.exports = function getGlobals() {
+export default function getGlobals() {
   const globals = {};
 
   envs.forEach(env => {
-    globals[env] = stringifyEnv(process.env[env]);
+    globals[env] = stringifyEnv(process.env[env] || null);
   });
 
   return new webpack.DefinePlugin(globals);

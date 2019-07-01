@@ -1,6 +1,6 @@
-const config = require('./config');
+import config from './config';
 
-module.exports = config({
+export default config({
   production: false,
   development: true,
 });

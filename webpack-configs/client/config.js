@@ -1,13 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const MiniCssPlugin = require('mini-css-extract-plugin');
-const autoprefixer = require('autoprefixer');
-const path = require('path');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import VueLoaderPlugin from 'vue-loader/lib/plugin';
+import MiniCssPlugin from 'mini-css-extract-plugin';
+import autoprefixer from 'autoprefixer';
+import path from 'path';
 
-const getGlobals = require('../plugins/globals');
-const getEnvs = require('../utils/dotenv');
+import getGlobals from '../plugins/globals';
+import getEnvs from '../utils/dotenv';
 
 getEnvs();
 
@@ -15,7 +15,7 @@ const context = {
   DIR: path.resolve('./'),
 };
 
-module.exports = function configClientWebpack(props) {
+export default function configClientWebpack(props) {
   const { production = true } = props;
   const { DIR } = context;
 
@@ -26,13 +26,13 @@ module.exports = function configClientWebpack(props) {
     context: DIR,
     entry: {
       client: [
-        '@babel/polyfill', 
-        path.join(DIR, 'client', 'index.js'),
+        '@babel/polyfill',
+        path.join(DIR, 'client'),
       ],
     },
     output: {
-      filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, '../..', 'build'),
+      filename: production ? '[name].[hash].js' : 'client.js',
+      path: path.join(DIR, 'build'),
       publicPath: process.env.PUBLIC_PATH,
     },
     resolve: {
@@ -44,7 +44,7 @@ module.exports = function configClientWebpack(props) {
       mainFiles: ['index.js'],
       extensions: ['.js', '.jsx', '.styl', '.vue'],
       modules: [DIR, 'node_modules'],
-    },    
+    },
     module: {
       rules: [
         {
@@ -60,8 +60,8 @@ module.exports = function configClientWebpack(props) {
             options: {
               name: '[name]@[hash:base64:5].[ext]',
             },
-          }, 
-        },       
+          },
+        },
         {
           test: /\.styl$/,
           use: [
@@ -87,7 +87,7 @@ module.exports = function configClientWebpack(props) {
             {
               loader: 'stylus-loader',
               options: {
-                import: [path.resolve(__dirname, '../..', 'client', 'styles', 'import.styl')],
+                import: [path.join(DIR, 'client', 'styles', 'import.styl')],
               },
             },
           ],
@@ -99,6 +99,9 @@ module.exports = function configClientWebpack(props) {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: [
+                '@babel/plugin-syntax-dynamic-import',
+              ],
             },
           },
         },
@@ -109,14 +112,14 @@ module.exports = function configClientWebpack(props) {
       new VueLoaderPlugin(),
       new MiniCssPlugin({
         filename: '[name]@[hash:12].css',
-      }),      
+      }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'client/index.html',
       }),
-    ],
+    ].filter(Boolean),
     optimization: production ?
-      { minimizer: [new UglifyJsPlugin() ] } :
+      { minimizer: [new UglifyJsPlugin()] } :
       {},
   };
 };

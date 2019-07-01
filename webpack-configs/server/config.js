@@ -1,20 +1,28 @@
-const path = require('path');
+import path from 'path';
 
-const getGlobals = require('../plugins/globals');
-const getExternals = require('../utils/externals');
-const getEnvs = require('../utils/dotenv');
+import getGlobals from '../plugins/globals';
+import getExternals from '../utils/externals';
+import getEnvs from '../utils/dotenv';
 
 getEnvs();
 
-module.exports = function configServerWebpack(props) {
+const context = {
+  DIR: path.resolve('./'),
+};
+
+export default function configServerWebpack(props) {
   const { production = true } = props;
+  const { DIR } = context;
 
   return {
     target: 'node',
     mode: production ? 'production' : 'development',
     context: path.resolve('./'),    
     entry: {
-      server: ['@babel/polyfill', './server/index.js'],
+      server: [
+        '@babel/polyfill', 
+        path.join(DIR, 'server'),
+      ],
     },
     output: {
       filename: '[name].js',
@@ -32,6 +40,9 @@ module.exports = function configServerWebpack(props) {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: [
+                '@babel/plugin-syntax-dynamic-import',
+              ],              
             },
           },
         },

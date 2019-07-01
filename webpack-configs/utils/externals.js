@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 function getExternals() {
   const nodeModules = {};
@@ -12,4 +12,4 @@ function getExternals() {
   return nodeModules;
 }
 
-module.exports = getExternals;
+export default getExternals;
