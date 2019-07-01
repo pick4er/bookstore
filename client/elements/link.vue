@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'custom-link',
+    name: 'base-link',
     props: {
       target: {
         type: String,

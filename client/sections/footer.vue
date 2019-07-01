@@ -1,22 +1,22 @@
 <template>
   <div :class="$style.footer">
     2019 /&nbsp;
-    <custom-link 
+    <base-link 
       href="http://pick4er.com" 
       :class="$style.link"
     >
       @pick4er
-    </custom-link>
+    </base-link>
   </div>
 </template>
 
 <script>
-  import customLink from 'client/elements/customLink';
+  import link from 'client/elements/link';
 
   export default {
     name: 'footer-section',
     components: {
-      'custom-link': customLink,
+      'base-link': link,
     },
   }
 </script>

@@ -10,7 +10,7 @@
 
 <style lang="styl" module>
   .header
-    font-family $fontLight
+    font-family $robotoLight
     font-weight bold
     font-size x(50)
     text-align left
