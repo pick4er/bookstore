@@ -34,10 +34,14 @@
         <td :class="$style.order">
           <div>
             <base-input
-              placeholder=1 
               v-model="book.value"
+              :placeholder="1" 
+              :id="book.title"
+              :class="$style.input"
             ></base-input>
-            <base-button>Заказать</base-button>
+            <base-button :class="$style.button">
+              Заказать
+            </base-button>
           </div>
         </td>
       </tr>
@@ -51,6 +55,10 @@
 
   export default {
     name: 'books',
+    components: {
+      'base-input': input,
+      'base-button': button,
+    },
     props: {
       books: {
         type: Array,
@@ -63,10 +71,6 @@
         booksOrder: [],
         isLoading: true,
       }
-    },
-    components: {
-      'base-input': input,
-      'base-button': button,
     },
     created() {
       if (this.books.length !== 0) {
@@ -147,4 +151,10 @@
         div
           flexCenter()
           justify-content space-evenly
+
+        .input
+          width x(130)          
+
+        .button
+          width x(130)
 </style>

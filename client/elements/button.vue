@@ -20,8 +20,8 @@
   .button
     flexCenter()
     display inline-flex
-    width x(130)
     height x(30)
+    width 100%
     background-color $button
     color $white
     font-size x(16)
