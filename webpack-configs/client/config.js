@@ -63,7 +63,7 @@ export default function configClientWebpack(props) {
           },
         },
         {
-          test: /\.styl$/,
+          test: /\.styl|(us)$/,
           use: [
             production ?
               MiniCssPlugin.loader :

@@ -95,7 +95,7 @@
   }
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   .table
     border x(5) solid $gray
     width 100%

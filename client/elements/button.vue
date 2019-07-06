@@ -16,7 +16,7 @@
   };
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   .button
     flexCenter()
     display inline-flex

@@ -10,7 +10,7 @@
       v-bind="$attrs"
       @input="$emit('input', $event.target.value)"
       :value="value"
-      :requried="required"
+      :required="required"
       :id="id"
       :class="inputClasses"
       :aria-label="labelText"
@@ -86,7 +86,7 @@
   };
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   .wrap
     display block
 

@@ -13,16 +13,31 @@
         :class="$style.formInput"
       ></base-input>
 
-      <base-input 
-        v-model="authors" 
-        id="authors" 
-        name="authors"
+      <base-dropdown
         labelText="Авторы"
-        :modes="inputModes"
         :class="$style.formInput"
-      ></base-input>
+        :values="unselectedAuthors"
+        titleKey="display_name"
+        selectionKey="author_id"
+        :onOpen="onOpen"
+        :onSelect="onAuthorSelect"
+      ></base-dropdown>
 
-      <div :class="$style.authorsList"></div>
+      <div :class="$style.selectedAuthorsList">
+        <template v-if="selectedAuthors.length > 0">
+          <ul>
+            <li
+              v-for="({author_id, display_name}) in selectedAuthors"
+              :key="author_id"
+            >
+              <button 
+                type="button"
+                @click="onSelectedAuthorSelect(author_id)"
+              >{{ display_name }}</button>
+            </li>
+          </ul>
+        </template> 
+      </div>
 
       <base-button 
         type="submit"
@@ -36,6 +51,7 @@
 
 <script>
   import input from 'client/elements/input'
+  import dropdown from 'client/elements/dropdown'
   import button from 'client/elements/button'
 
   import request from 'client/fetch';
@@ -45,16 +61,32 @@
     components: {
       'base-input': input,
       'base-button': button,
+      'base-dropdown': dropdown,
     },
     data() {
       return {
         bookTitle: '',
-        authors: '',
+        selectedAuthors: [],
+        loadedAuthors: [],
         inputModes: [
           'white', 
           'textLeft',
         ],        
       }
+    },
+    computed: {
+      selectedAuthorsValues() {
+        return this.selectedAuthors.map(
+          v => v.display_name
+        );
+      },
+      unselectedAuthors() {
+        return this.loadedAuthors.filter(
+          v => !this.selectedAuthors.find(
+            sv => Number(sv.author_id) === Number(v.author_id),
+          ),
+        );
+      },
     },
     methods: {
       async handleSubmit() {
@@ -65,20 +97,37 @@
           },
           body: {
             title: this.bookTitle,
-            authors: this.authors.split(','),
+            authors: this.selectedAuthors.map(v => v.author_id),
           },
         }).catch(console.error);
         this.resetForm();
       },
       resetForm() {
         this.bookTitle = '';
-        this.authors = '';
+        this.selectedAuthors = [];
+      },
+      async onOpen() {
+        const result = await request('authors')
+          .catch(console.error);
+        this.loadedAuthors = result;
+      },
+      onAuthorSelect(author_id) {
+        this.selectedAuthors = this.selectedAuthors.concat(
+          this.loadedAuthors.find(
+            v => Number(v.author_id) === Number(author_id),
+          ),
+        );
+      },
+      onSelectedAuthorSelect(selectedAuthorId) {
+        this.selectedAuthors = this.selectedAuthors.filter(
+          v => Number(v.author_id) !== Number(selectedAuthorId),
+        );
       },
     },
   }
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   .wrap
     flexColumn()
 
@@ -86,8 +135,32 @@
       flex-grow 1
       flexColumn()
 
-      .authorsList
+      .selectedAuthorsList
         flex-grow 1
+
+  .selectedAuthorsList
+    margin-top x(6)
+    margin-bottom x(6)
+
+    ul
+      list-style none
+      padding x(0)
+      margin x(0)
+      font-size x(16)
+      font-family $robotoLight
+      
+      li
+        display inline
+        line-height x(20)
+
+      li + li
+        &:before
+          content ', '
+
+      button
+        background-color $white
+        border none
+        padding x(0)
 
   .formInput + .formInput
     margin-top x(30)
