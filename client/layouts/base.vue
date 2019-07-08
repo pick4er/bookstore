@@ -1,5 +1,13 @@
 <template>
   <div :class="$style.base">
+    <nav :class="$style.nav">
+      <slot name="nav" :class="$style.navLinks">
+        <nav-section
+          :class="$style.navLinks"
+        ></nav-section>
+      </slot>
+    </nav>
+
     <header :class="$style.header">
       <slot name="header">
         <header-section></header-section>
@@ -19,19 +27,21 @@
 </template>
 
 <script>
+  import navSection from 'client/sections/nav';
   import headerSection from 'client/sections/header';
   import footerSection from 'client/sections/footer';
 
   export default {
     name: 'base-layout',
     components: {
+      'nav-section': navSection,
       'header-section': headerSection,
       'footer-section': footerSection,      
     }
   }
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   limitWidth()
     width 100%
     max-width x(1000)
@@ -39,13 +49,19 @@
     margin-right auto
 
   .base
-    display flex
-    flex-flow column nowrap
+    flexColumn()
     height 100%
-    padding-top x(35)
+    
+  .nav
+    height auto
+    background-color $gray
+
+    .navLinks
+      limitWidth()
 
   .header
     limitWidth()
+    padding-top x(30)
     padding-bottom x(35)
 
   .main

@@ -1,10 +1,7 @@
 <template>
   <div :class="$style.footer">
     2019 /&nbsp;
-    <base-link 
-      href="http://pick4er.com" 
-      :class="$style.link"
-    >
+    <base-link href="http://pick4er.com">
       @pick4er
     </base-link>
   </div>
@@ -21,10 +18,7 @@
   }
 </script>
 
-<style lang="styl" module>
-  .link
-    color $white
-
+<style lang="stylus" module>
   .footer
     flexCenter()  
     width 100%

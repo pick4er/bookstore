@@ -33,7 +33,7 @@
   }
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   .form
     display flex
     flex-flow row nowrap
