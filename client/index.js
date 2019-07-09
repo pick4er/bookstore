@@ -1,7 +1,10 @@
 import request from 'client/fetch';
-import { changeBooks } from 'client/vue.js';
+import createApp, { changeBooks } from 'client/app.js';
 
 import 'client/styles/app.styl';
+
+const { app } = createApp();
+app.$mount('#app');
 
 request('books')
   .then(changeBooks)

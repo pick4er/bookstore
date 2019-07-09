@@ -26,4 +26,7 @@
     font-size x(14)
     background-color $dark
     color $white
+    
+    a
+      color $white
 </style>

@@ -1,9 +1,3 @@
-<template>
-  <a :target="target" :rel="rel" :class="linkClasses">
-    <slot></slot>
-  </a>
-</template>
-
 <script>
   export default {
     name: 'base-link',
@@ -15,6 +9,14 @@
       rel: {
         type: String,
         default: 'noopener noreferrer',
+      },
+      title: {
+        type: String,
+        default: '',
+      },
+      isRouter: {
+        type: Boolean,
+        default: false,
       },
       modes: {
         validator(values) {
@@ -43,7 +45,25 @@
           modeMappings,
         ];
       },
-    },    
+    },
+    render(createElement) {
+      const element = this.isRouter ?
+        'router-link' :
+        'a';
+
+      return createElement(
+        element, 
+        {
+          class: this.linkClasses,
+          attrs: {
+            target: this.target,
+            rel: this.rel,
+            ...this.$attrs,       
+          },
+        },
+        this.$slots.default,
+      );
+    },
   };
 </script>
 
@@ -52,7 +72,6 @@
     cursor pointer
 
     &.plain
-      color $white
       text-decoration none
       
     &.accent

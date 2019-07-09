@@ -1,14 +1,20 @@
 <template>
   <ul :class="$style.list">
     <li>
-      <base-link :modes="['accent']">
-        Панель администратора
-      </base-link>
+      <base-link 
+        isRouter 
+        to="/admin"
+        target="_self"
+        :modes="['accent']" 
+      >Панель администратора</base-link>
     </li>
     <li>
-      <base-link :modes="['accent']">
-        В корзине: X книг
-      </base-link>
+      <base-link 
+        isRouter 
+        to="/cart"
+        target="_self"
+        :modes="['accent']" 
+      >В корзине: X книг</base-link>
     </li>
   </ul>
 </template>

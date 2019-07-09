@@ -73,25 +73,25 @@
       }
     },
     created() {
-      if (this.books.length !== 0) {
-        this.getBooks(nextBooks)
+      if (this.books.length > 0) {
+        this.prepareBooks(this.books);
       }
     },
     watch: {
       books(nextBooks, books) {
         if (books.length !== nextBooks.length) {
-          this.getBooks(nextBooks)
+          this.prepareBooks(nextBooks)
         }
       },
     },
     methods: {
-      getBooks(nextBooks) {
+      prepareBooks(nextBooks) {
         this.booksOrder = nextBooks.map(book => ({
           ...book, value: 1,
         }));
         this.isLoading = false;
-      }
-    }
+      },
+    },
   }
 </script>
 

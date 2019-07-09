@@ -32,6 +32,7 @@ export default function configClientWebpack(props) {
     },
     output: {
       filename: production ? '[name].[hash].js' : 'client.js',
+      chunkFilename: production ? '[name].[hash].js' : '[name].js',
       path: path.join(DIR, 'build'),
       publicPath: process.env.PUBLIC_PATH,
     },
