@@ -13,6 +13,7 @@
           Loading ...
         </td>
       </tr>
+
       <tr 
         v-else
         v-for="book in booksOrder" 
@@ -22,15 +23,13 @@
           :title="book.title"
           :class="$style.title"
           scope="row" 
-        >
-          {{ book.title }}
-        </td>
+        >{{ book.title }}</td>
+
         <td 
           :title="book.authors"
           :class="$style.authors"
-        >
-          {{ book.authors }}
-        </td>
+        >{{ book.authors }}</td>
+
         <td :class="$style.order">
           <div>
             <base-input
@@ -39,9 +38,10 @@
               :id="book.title"
               :class="$style.input"
             ></base-input>
-            <base-button :class="$style.button">
-              Заказать
-            </base-button>
+            <base-button 
+              :class="$style.button"
+              @click="orderBook(book.value)"
+            >Заказать</base-button>
           </div>
         </td>
       </tr>
@@ -90,6 +90,12 @@
           ...book, value: 1,
         }));
         this.isLoading = false;
+      },
+      orderBook(value) {
+        this.$store.dispatch({
+          type: 'ADD_BOOKS',
+          booksCount: value,
+        });
       },
     },
   }

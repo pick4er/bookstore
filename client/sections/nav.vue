@@ -14,7 +14,7 @@
         to="/cart"
         target="_self"
         :modes="['accent']" 
-      >В корзине: X книг</base-link>
+      >В корзине: {{ booksCount }} книг</base-link>
     </li>
   </ul>
 </template>
@@ -26,6 +26,11 @@
     name: 'nav-section',
     components: {
       'base-link': link,
+    },
+    computed: {
+      booksCount() {
+        return this.$store.state.booksCount;
+      }
     },
   }
 </script>

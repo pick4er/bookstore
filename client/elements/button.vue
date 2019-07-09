@@ -1,5 +1,10 @@
 <template>
-  <button :type="type" :class="$style.button">
+  <button 
+    v-bind="$attrs"
+    :type="type" 
+    :class="$style.button"
+    @click="$emit('click', $event)"
+  >
     <slot>Button</slot>
   </button>
 </template>

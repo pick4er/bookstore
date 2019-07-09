@@ -90,7 +90,7 @@
   }
 </script>
 
-<style lang="styl" module>
+<style lang="stylus" module>
   .formInput + .formInput
     margin-top x(30)
 </style>
