@@ -13,13 +13,13 @@
       ></base-input>
 
       <base-input 
+        required
         v-model="name" 
         id="name" 
         name="name"
         labelText="Имя"
         placeholder="Михаил"
         :modes="inputModes"
-        :required="true"
         :class="$style.formInput"
       ></base-input>
 

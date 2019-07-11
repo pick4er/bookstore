@@ -29,7 +29,7 @@
     },
     computed: {
       booksCount() {
-        return this.$store.state.booksCount;
+        return this.$store.getters.booksCount;
       }
     },
   }

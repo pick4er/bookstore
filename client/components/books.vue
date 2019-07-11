@@ -33,14 +33,14 @@
         <td :class="$style.order">
           <div>
             <base-input
-              v-model="book.value"
+              v-model.number="book.count"
               :placeholder="1" 
               :id="book.title"
               :class="$style.input"
-            ></base-input>
+            />
             <base-button 
               :class="$style.button"
-              @click="orderBook(book.value)"
+              @click="orderBook(book)"
             >Заказать</base-button>
           </div>
         </td>
@@ -87,14 +87,14 @@
     methods: {
       prepareBooks(nextBooks) {
         this.booksOrder = nextBooks.map(book => ({
-          ...book, value: 1,
+          ...book, count: 1,
         }));
         this.isLoading = false;
       },
-      orderBook(value) {
+      orderBook(book) {
         this.$store.dispatch({
-          type: 'ADD_BOOKS',
-          booksCount: value,
+          type: 'ORDER_BOOK',
+          book,
         });
       },
     },

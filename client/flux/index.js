@@ -10,7 +10,7 @@ Vue.use(Vuex);
 export default function createStore() {
   return new Vuex.Store({
     state: {
-      booksCount: 0,
+      order: {},
     },
     actions,
     getters,
