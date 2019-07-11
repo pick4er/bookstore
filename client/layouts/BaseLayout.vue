@@ -2,15 +2,13 @@
   <div :class="$style.base">
     <nav :class="$style.nav">
       <slot name="nav" :class="$style.navLinks">
-        <nav-section
-          :class="$style.navLinks"
-        ></nav-section>
+        <nav-section :class="$style.navLinks" />
       </slot>
     </nav>
 
     <header :class="$style.header">
       <slot name="header">
-        <header-section></header-section>
+        <header-section />
       </slot>
     </header>
     
@@ -20,23 +18,23 @@
     
     <footer :class="$style.footer">
       <slot name="footer">
-        <footer-section></footer-section>
+        <footer-section />
       </slot>
     </footer>
   </div>
 </template>
 
 <script>
-  import navSection from 'client/sections/nav';
-  import headerSection from 'client/sections/header';
-  import footerSection from 'client/sections/footer';
+  import NavSection from 'client/sections/NavSection';
+  import HeaderSection from 'client/sections/HeaderSection';
+  import FooterSection from 'client/sections/FooterSection';
 
   export default {
     name: 'base-layout',
     components: {
-      'nav-section': navSection,
-      'header-section': headerSection,
-      'footer-section': footerSection,      
+      'nav-section': NavSection,
+      'header-section': HeaderSection,
+      'footer-section': FooterSection,      
     }
   }
 </script>

@@ -11,7 +11,7 @@
         :modes="inputModes"
         :required="true"
         :class="$style.formInput"
-      ></base-input>
+      />
 
       <base-dropdown
         labelText="Авторы"
@@ -21,7 +21,7 @@
         selectionKey="author_id"
         :onOpen="onOpen"
         :onSelect="onAuthorSelect"
-      ></base-dropdown>
+      />
 
       <div :class="$style.selectedAuthorsList">
         <template v-if="selectedAuthors.length > 0">
@@ -50,18 +50,18 @@
 </template>
 
 <script>
-  import input from 'client/elements/input'
-  import dropdown from 'client/elements/dropdown'
-  import button from 'client/elements/button'
+  import BaseInput from 'client/elements/BaseInput'
+  import BaseDropdown from 'client/elements/BaseDropdown'
+  import BaseButton from 'client/elements/BaseButton'
 
   import request from 'client/fetch';
 
   export default {
     name: 'book-form',
     components: {
-      'base-input': input,
-      'base-button': button,
-      'base-dropdown': dropdown,
+      'base-input': BaseInput,
+      'base-button': BaseButton,
+      'base-dropdown': BaseDropdown,
     },
     data() {
       return {

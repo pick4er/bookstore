@@ -5,15 +5,15 @@ Vue.use(Router);
 
 const CatalogPage = () => import(
   /* webpackChunkName: "CatalogPage" */ 
-  'client/pages/catalog'
+  'client/pages/CatalogPage'
 );
 const AdminPage = () => import(
   /* webpackChunkName: "AdminPage" */ 
-  'client/pages/admin'
+  'client/pages/AdminPage'
 );
 const CartPage = () => import(
   /* webpackChunkName: "CartPage" */ 
-  'client/pages/cart'
+  'client/pages/CartPage'
 );
 
 export default function createRouter() {

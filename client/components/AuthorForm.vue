@@ -10,7 +10,7 @@
         :modes="inputModes"
         :class="$style.formInput"
         placeholder="Шолохов"
-      ></base-input>
+      />
 
       <base-input 
         required
@@ -21,7 +21,7 @@
         placeholder="Михаил"
         :modes="inputModes"
         :class="$style.formInput"
-      ></base-input>
+      />
 
       <base-input 
         v-model="middleName" 
@@ -31,7 +31,7 @@
         placeholder="Александрович"
         :modes="inputModes"
         :class="$style.formInput"
-      ></base-input>
+      />
 
       <base-button 
         type="submit"
@@ -44,16 +44,16 @@
 </template>
 
 <script>
-  import input from 'client/elements/input'
-  import button from 'client/elements/button'
+  import BaseInput from 'client/elements/BaseInput'
+  import BaseButton from 'client/elements/BaseButton'
 
   import request from 'client/fetch';
 
   export default {
     name: 'author-form',
     components: {
-      'base-input': input,
-      'base-button': button,
+      'base-input': BaseInput,
+      'base-button': BaseButton,
     },
     data() {
       return {

@@ -1,19 +1,19 @@
 <template>
   <div :class="$style.form">
-    <book-form :class="$style.block"></book-form>
-    <author-form :class="$style.block"></author-form>
+    <book-form :class="$style.block" />
+    <author-form :class="$style.block" />
   </div>
 </template>
 
 <script>
-  import authorForm from 'client/components/authorForm';
-  import bookForm from 'client/components/bookForm';
+  import AuthorForm from 'client/components/AuthorForm';
+  import BookForm from 'client/components/BookForm';
 
   export default {
     name: 'admin-page',
     components: {
-      'book-form': bookForm,
-      'author-form': authorForm,
+      'book-form': BookForm,
+      'author-form': AuthorForm,
     },
   }
 </script>

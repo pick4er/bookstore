@@ -1,16 +1,16 @@
 <template>
   <base-layout>
-    <router-view :books="books"></router-view>
+    <router-view :books="books" />
   </base-layout>
 </template>
 
 <script>
-  import base from 'client/layouts/base';
+  import BaseLayout from 'client/layouts/BaseLayout';
 
   export default {
     name: 'App',
     components: {
-      'base-layout': base,
+      'base-layout': BaseLayout,
     },
     props: {
       books: {

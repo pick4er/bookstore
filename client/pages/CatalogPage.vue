@@ -1,9 +1,9 @@
 <template>
-  <books :books="books"></books>
+  <books-table :books="books" />
 </template>
 
 <script>
-  import books from 'client/components/books';
+  import BooksTable from 'client/components/BooksTable';
 
   export default {
     name: 'catalog-page',
@@ -14,7 +14,7 @@
       },
     },
     components: {
-      books,
+      'books-table': BooksTable,
     },
   }
 </script>

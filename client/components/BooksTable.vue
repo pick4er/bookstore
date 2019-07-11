@@ -50,14 +50,14 @@
 </template>
 
 <script>
-  import input from 'client/elements/input'
-  import button from 'client/elements/button'
+  import BaseInput from 'client/elements/BaseInput'
+  import BaseButton from 'client/elements/BaseButton'
 
   export default {
-    name: 'books',
+    name: 'books-table',
     components: {
-      'base-input': input,
-      'base-button': button,
+      'base-input': BaseInput,
+      'base-button': BaseButton,
     },
     props: {
       books: {

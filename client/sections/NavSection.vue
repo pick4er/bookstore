@@ -20,12 +20,12 @@
 </template>
 
 <script>
-  import link from 'client/elements/link';
+  import BaseLink from 'client/elements/BaseLink';
 
   export default {
     name: 'nav-section',
     components: {
-      'base-link': link,
+      'base-link': BaseLink,
     },
     computed: {
       booksCount() {

@@ -6,14 +6,14 @@
 </template>
 
 <script>
-  import orderForm from 'client/components/orderForm';
-  import order from 'client/components/order';
+  import OrderForm from 'client/components/OrderForm';
+  import OrderList from 'client/components/OrderList';
 
   export default {
     name: 'cart-page',
     components: {
-      'order-form': orderForm,
-      'order-list': order,
+      'order-form': OrderForm,
+      'order-list': OrderList,
     },
     computed: {
       order() {

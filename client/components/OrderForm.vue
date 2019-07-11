@@ -11,7 +11,7 @@
         :modes="inputModes"
         :class="$style.formInput"
         placeholder="+7 (xxx) xxx-xxx-xx"
-      ></base-input>
+      />
 
       <base-input 
         v-model="buyer" 
@@ -21,7 +21,7 @@
         placeholder="Каледин Алексей Максимович"
         :modes="inputModes"
         :class="$style.formInput"
-      ></base-input>
+      />
 
       <base-input 
         v-model="address" 
@@ -31,7 +31,7 @@
         placeholder="Ростов-на-Дону, до востребования"
         :modes="inputModes"
         :class="$style.formInput"
-      ></base-input>
+      />
 
       <base-button 
         type="submit"
@@ -44,14 +44,14 @@
 </template>
 
 <script>
-  import input from 'client/elements/input';
-  import button from 'client/elements/button';
+  import BaseInput from 'client/elements/BaseInput';
+  import BaseButton from 'client/elements/BaseButton';
 
   export default {
     name: 'order-form',
     components: {
-      'base-input': input,
-      'base-button': button,
+      'base-input': BaseInput,
+      'base-button': BaseButton,
     },
     data() {
       return {
