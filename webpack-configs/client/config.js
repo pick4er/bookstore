@@ -3,6 +3,7 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import MiniCssPlugin from 'mini-css-extract-plugin';
 import autoprefixer from 'autoprefixer';
+import VueSSRPlugin from 'vue-server-renderer/client-plugin';
 import path from 'path';
 
 import getGlobals from '../plugins/globals';
@@ -113,6 +114,7 @@ export default function configClientWebpack(props) {
       new MiniCssPlugin({
         filename: '[name]@[hash:12].css',
       }),
+      new VueSSRPlugin(),
     ].filter(Boolean),
     optimization: production ?
       { minimizer: [new UglifyJsPlugin()] } :

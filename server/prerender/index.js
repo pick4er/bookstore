@@ -1,11 +1,24 @@
+import fs from 'fs';
 import Vue from 'vue';
 import { createBundleRenderer } from 'vue-server-renderer';
 
-import markup from '../templates';
-import bundle from 'bundle/vue-ssr-server-bundle.json';
+import markup from 'server/templates';
+import ssrBundle from 'bundle/vue-ssr-server-bundle.json';
+import clientManifest from 'build/vue-ssr-client-manifest.json';
 
-const renderer = createBundleRenderer(bundle, {
+const renderer = createBundleRenderer(ssrBundle, {
+  inject: false,
   runInNewContext: false,
+  clientManifest,
+  template(html, context) {
+    return markup.render({
+      html,
+      styles: context.renderStyles(),
+      scripts: context.renderScripts(),
+      resourceHints: context.renderResourceHints(),
+    });
+  },
+  basedir: './build',
 });
 
 function prerender(ctx) {
@@ -13,16 +26,15 @@ function prerender(ctx) {
 
   renderer.renderToString(context, (err, html) => {
     if (err) {
+      console.log('--- err:');
+      console.log(err);
       ctx.status = 500;
       ctx.body = 'Internal error';
       return;
     }
 
     ctx.status = 200;
-    ctx.body = markup.render({
-      html,
-      styles: context.renderStyles(),
-    });
+    ctx.body = html;
   });
 };
 
