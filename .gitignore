@@ -8,6 +8,8 @@ yarn-error.log*
 # Runtime data
 .idea
 build
+bundle
+lib
 pids
 *.pid
 *.seed

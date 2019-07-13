@@ -5,7 +5,6 @@ import createRouter from 'client/router';
 import createStore from 'client/flux';
 
 const data = { books: [] };
-const render = h => h(App, { props: data });
 
 export function changeBooks(nextBooks) {
   data.books = nextBooks;
@@ -19,7 +18,7 @@ export default function createApp() {
     data,
     store,
     router,
-    render,
+    render: h => h(App, { props: data }),
   });
 
   return {

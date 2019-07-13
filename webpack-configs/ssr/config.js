@@ -1,11 +1,12 @@
-/* eslint-disable import/no-extraneous-dependencies */
+import path from 'path';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import MiniCssPlugin from 'mini-css-extract-plugin';
 import autoprefixer from 'autoprefixer';
-import path from 'path';
+import VueSSRPlugin from 'vue-server-renderer/server-plugin'
 
 import getGlobals from '../plugins/globals';
+import getExternals from '../utils/externals';
 import getEnvs from '../utils/dotenv';
 
 getEnvs();
@@ -14,37 +15,31 @@ const context = {
   DIR: path.resolve('./'),
 };
 
-export default function configClientWebpack(props) {
+export default function configSSRWebpack(props) {
   const { production = true } = props;
   const { DIR } = context;
 
   return {
-    target: 'web',
+    target: 'node',
     mode: production ? 'production' : 'development',
-    devtool: production ? 'cheap-source-map' : 'source-map',
-    context: DIR,
+    context: path.resolve('./'),    
     entry: {
-      client: [
-        '@babel/polyfill',
-        path.join(DIR, 'client'),
+      ssr: [
+        path.join(DIR, 'client', 'ssr'),
       ],
     },
     output: {
-      filename: production ? '[name].[hash].js' : 'client.js',
-      chunkFilename: production ? '[name].[hash].js' : '[name].js',
-      path: path.join(DIR, 'build'),
+      filename: '[name].js',
+      path: path.resolve(__dirname, '../../', 'bundle'),
+      libraryTarget: 'commonjs2',
       publicPath: process.env.PUBLIC_PATH,
     },
     resolve: {
-      alias: {
-        vue$: production ?
-          'vue/dist/vue.min.js' :
-          'vue/dist/vue.js',
-      },
       mainFiles: ['index.js'],
       extensions: ['.js', '.jsx', '.styl', '.vue'],
       modules: [DIR, 'node_modules'],
     },
+    externals: getExternals(),
     module: {
       rules: [
         {
@@ -101,7 +96,7 @@ export default function configClientWebpack(props) {
               presets: ['@babel/preset-env'],
               plugins: [
                 '@babel/plugin-syntax-dynamic-import',
-              ],
+              ],              
             },
           },
         },
@@ -113,9 +108,7 @@ export default function configClientWebpack(props) {
       new MiniCssPlugin({
         filename: '[name]@[hash:12].css',
       }),
-    ].filter(Boolean),
-    optimization: production ?
-      { minimizer: [new UglifyJsPlugin()] } :
-      {},
+      new VueSSRPlugin(),
+    ],
   };
 };

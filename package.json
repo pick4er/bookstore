@@ -5,17 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clear": "rm -rf ./build && rm -rf ./lib",
+    "clear": "rm -rf ./build && rm -rf ./lib && rm -rf ./bundle",
     "compile": "babel webpack-configs -d lib",
     "prepare": "npm run clear && npm run compile",
     "build-dev-server": "webpack --config lib/server/dev.js",
     "build-dev-client": "webpack --config lib/client/dev.js",
+    "build-dev-ssr": "webpack --config lib/ssr/dev.js",
     "build-prod-server": "webpack --config lib/server/prod.js",
     "build-prod-client": "webpack --config lib/client/prod.js",
+    "build-prod-ssr": "webpack --config lib/ssr/prod.js",
     "start": "node build/server.js",
-    "dev": "export NODE_ENV=development && npm run prepare && npm run build-dev-client && npm run build-dev-server && npm run start",
-    "prod": "export NODE_ENV=production && npm run prepare && npm run build-prod-client && npm run build-prod-server && npm run start",
-    "heroku-postbuild": "export NODE_ENV=production && npm run build-prod-client && npm run build-prod-server"
+    "start-ssr": "export NODE_ENV=development && npm run prepare && npm run build-dev-ssr && npm run build-dev-server && npm run start",
+    "dev": "export NODE_ENV=development && npm run prepare && npm run build-dev-ssr && npm run build-dev-client && npm run build-dev-server && npm run start",
+    "prod": "export NODE_ENV=production && npm run prepare && npm run build-prod-ssr && npm run build-prod-client && npm run build-prod-server && npm run start",
+    "heroku-postbuild": "export NODE_ENV=production && npm run build-prod-client && npm run build-prod-server && npm run build-prod-ssr"
   },
   "author": "pick4er",
   "license": "WTFPL",
@@ -36,6 +39,7 @@
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.9.0",
     "mini-css-extract-plugin": "^0.7.0",
+    "mustache-loader": "^1.4.3",
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "stylus": "^0.54.5",
@@ -56,6 +60,7 @@
     "request": "^2.88.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
+    "vue-server-renderer": "^2.6.10",
     "vuex": "^3.1.1"
   },
   "engines": {

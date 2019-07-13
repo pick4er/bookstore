@@ -25,10 +25,15 @@ export default function configServerWebpack(props) {
       ],
     },
     output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, '../..', 'build'),
-      libraryTarget: 'commonjs',
+      filename: 'server.js',
+      path: path.resolve(__dirname, '../../', 'build'),
+      libraryTarget: 'commonjs2',
       publicPath: process.env.PUBLIC_PATH,
+    },
+    resolve: {
+      mainFiles: ['index.js'],
+      extensions: ['.js', '.jsx', '.styl', '.vue'],
+      modules: [DIR, 'node_modules'],
     },
     externals: getExternals(),
     module: {
@@ -45,6 +50,18 @@ export default function configServerWebpack(props) {
               ],              
             },
           },
+        },
+        {
+          test: /\.mustache$/,
+          use: [
+            {
+              loader: 'mustache-loader',
+              options: {
+                noShortcut: true,
+                tiny: Boolean(production),
+              },
+            },
+          ],
         },
       ],
     },

@@ -1,6 +1,3 @@
-import fs from 'fs';
+import prerender from '../prerender';
 
-export default function getClient(ctx) {
-  ctx.set({ 'Content-Type': 'text/html' });
-  ctx.body = fs.createReadStream('build/index.html');
-};
+export default prerender;
