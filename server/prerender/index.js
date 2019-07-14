@@ -10,32 +10,38 @@ const renderer = createBundleRenderer(ssrBundle, {
   inject: false,
   runInNewContext: false,
   clientManifest,
-  template(html, context) {
-    return markup.render({
+  template = (html, context) => (
+    markup.render({
       html,
       styles: context.renderStyles(),
       scripts: context.renderScripts(),
       resourceHints: context.renderResourceHints(),
-    });
-  },
-  basedir: './build',
+    );
+  ),
 });
 
-function prerender(ctx) {
-  const context = {};
+async function prerender(ctx) {
+  const context = {
+    url: ctx.url,
+  };
 
-  renderer.renderToString(context, (err, html) => {
-    if (err) {
-      console.log('--- err:');
+  const html = await renderer.renderToString(context)
+    .catch(err => {
       console.log(err);
-      ctx.status = 500;
-      ctx.body = 'Internal error';
-      return;
-    }
 
-    ctx.status = 200;
-    ctx.body = html;
-  });
+      if (err.status === 404) {
+        ctx.status = 404;
+        ctx.body = 'Not found';
+      } else {
+        ctx.status = 500;
+        ctx.body = 'Internal error';
+      }
+
+      return;
+    })
+
+  ctx.status = 200;
+  ctx.body = html;
 };
 
 export default prerender;
