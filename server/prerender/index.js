@@ -10,13 +10,16 @@ const renderer = createBundleRenderer(ssrBundle, {
   inject: false,
   runInNewContext: false,
   clientManifest,
-  template = (html, context) => (
+  template: (html, context) => (
     markup.render({
       html,
+      state: context.renderState({
+        windowKey: '__INITIAL_STATE__',
+      }),
       styles: context.renderStyles(),
       scripts: context.renderScripts(),
-      resourceHints: context.renderResourceHints(),
-    );
+      resourceHints: context.renderResourceHints()
+    })
   ),
 });
 

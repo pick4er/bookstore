@@ -54,7 +54,7 @@
   import BaseDropdown from 'client/elements/BaseDropdown'
   import BaseButton from 'client/elements/BaseButton'
 
-  import request from 'client/fetch';
+  import api from 'api';
 
   export default {
     name: 'book-form',
@@ -90,7 +90,7 @@
     },
     methods: {
       async handleSubmit() {
-        await request('add_book', {
+        await api('add_book', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -107,7 +107,7 @@
         this.selectedAuthors = [];
       },
       async onOpen() {
-        const result = await request('authors')
+        const result = await api('authors')
           .catch(console.error);
         this.loadedAuthors = result;
       },

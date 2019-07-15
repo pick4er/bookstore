@@ -5,10 +5,9 @@ import mime from 'mime/lite';
 /* GLOBAL DEV_SERVER_PORT PUBLIC_PATH */
 function getDevAsset(ctx) {
   if (DEV_SERVER_PORT) {
-    ctx.body = request(
-      `http://localhost:${DEV_SERVER_PORT}${PUBLIC_PATH}${ctx.filename}`,
-    );
-    ctx.status = 200
+    const response = request(`http://localhost:${DEV_SERVER_PORT}${PUBLIC_PATH}${ctx.filename}`)
+    ctx.body = response;
+    ctx.status = 200;
   } else {
     /* eslint-disable-next-line no-console */
     console.warn('NO DEV_SERVER_PORT');

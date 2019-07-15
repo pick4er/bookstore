@@ -1,6 +1,6 @@
 <template>
   <base-layout>
-    <router-view :books="books" />
+    <router-view />
   </base-layout>
 </template>
 
@@ -11,12 +11,6 @@
     name: 'App',
     components: {
       'base-layout': BaseLayout,
-    },
-    props: {
-      books: {
-        type: Array,
-        default: [],
-      },
     },
   }
 </script>

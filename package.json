@@ -53,10 +53,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "hogan.js": "^3.0.2",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
     "mime": "^2.4.4",
     "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
     "vue-server-renderer": "^2.6.10",

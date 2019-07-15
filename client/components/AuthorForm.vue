@@ -47,7 +47,7 @@
   import BaseInput from 'client/elements/BaseInput'
   import BaseButton from 'client/elements/BaseButton'
 
-  import request from 'client/fetch';
+  import api from 'api';
 
   export default {
     name: 'author-form',
@@ -68,7 +68,7 @@
     },
     methods: {
       async handleSubmit() {
-        await request('add_author', {
+        await api('add_author', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

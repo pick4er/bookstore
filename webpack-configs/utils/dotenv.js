@@ -22,4 +22,4 @@ export default function getEnvs() {
     }
     dotenv.config({ path: envPaths.development });
   }
-};
+}

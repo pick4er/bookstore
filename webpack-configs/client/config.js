@@ -41,6 +41,7 @@ export default function configClientWebpack(props) {
         vue$: production ?
           'vue/dist/vue.min.js' :
           'vue/dist/vue.js',
+        api$: path.join(DIR, 'fetch', 'browser.js'),
       },
       mainFiles: ['index.js'],
       extensions: ['.js', '.jsx', '.styl', '.vue'],
@@ -66,7 +67,7 @@ export default function configClientWebpack(props) {
         {
           test: /\.styl|(us)$/,
           use: [
-            production ?
+            production ? 
               MiniCssPlugin.loader :
               'vue-style-loader',
             {
@@ -111,7 +112,7 @@ export default function configClientWebpack(props) {
     plugins: [
       getGlobals(),
       new VueLoaderPlugin(),
-      new MiniCssPlugin({
+      production && new MiniCssPlugin({
         filename: '[name]@[hash:12].css',
       }),
       new VueSSRPlugin(),

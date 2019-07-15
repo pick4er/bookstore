@@ -7,14 +7,28 @@
 
   export default {
     name: 'catalog-page',
-    props: {
-      books: {
-        type: Array,
-        default: [],
-      },
-    },
     components: {
       'books-table': BooksTable,
+    },
+    computed: {
+      books() {
+        return this.$store.state.books;
+      },
+    },
+    serverPrefetch() {
+      return this.fetchBooks();
+    },
+    mounted() {
+      if (this.books.length === 0) {
+        return this.fetchBooks();
+      }
+    },
+    methods: {
+      fetchBooks() {
+        return this.$store.dispatch({
+          type: 'FETCH_BOOKS',
+        });
+      },
     },
   }
 </script>

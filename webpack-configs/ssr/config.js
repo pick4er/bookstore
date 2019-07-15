@@ -1,7 +1,6 @@
 import path from 'path';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
-import MiniCssPlugin from 'mini-css-extract-plugin';
 import autoprefixer from 'autoprefixer';
 import VueSSRPlugin from 'vue-server-renderer/server-plugin'
 
@@ -16,13 +15,13 @@ const context = {
 };
 
 export default function configSSRWebpack(props) {
-  const { production = true } = props;
+  const { production = true, development = false, } = props;
   const { DIR } = context;
 
   return {
     target: 'node',
     mode: production ? 'production' : 'development',
-    context: path.resolve('./'),    
+    context: DIR,
     entry: {
       ssr: [
         path.join(DIR, 'client', 'ssr'),
@@ -30,11 +29,14 @@ export default function configSSRWebpack(props) {
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(__dirname, '../../', 'bundle'),
+      path: path.join(DIR, 'bundle'),
       libraryTarget: 'commonjs2',
       publicPath: process.env.PUBLIC_PATH,
     },
     resolve: {
+      alias: {
+        api$: path.join(DIR, 'fetch', 'server.js'),
+      },
       mainFiles: ['index.js'],
       extensions: ['.js', '.jsx', '.styl', '.vue'],
       modules: [DIR, 'node_modules'],
@@ -60,9 +62,7 @@ export default function configSSRWebpack(props) {
         {
           test: /\.styl|(us)$/,
           use: [
-            production ?
-              MiniCssPlugin.loader :
-              'vue-style-loader',
+            development && 'vue-style-loader',
             {
               loader: 'css-loader',
               options: {
@@ -85,7 +85,7 @@ export default function configSSRWebpack(props) {
                 import: [path.join(DIR, 'client', 'styles', 'import.styl')],
               },
             },
-          ],
+          ].filter(Boolean),
         },
         {
           test: /\.js$/,
@@ -105,9 +105,6 @@ export default function configSSRWebpack(props) {
     plugins: [
       getGlobals(),
       new VueLoaderPlugin(),
-      new MiniCssPlugin({
-        filename: '[name]@[hash:12].css',
-      }),
       new VueSSRPlugin(),
     ],
   };

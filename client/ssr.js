@@ -1,18 +1,20 @@
 import createApp from 'client/app';
 
-export default context => {
-  return new Promise((resolve, reject) => {
-    const { app, router } = createApp();
+export default context => new Promise((resolve, reject) => {
+  const { app, router, store } = createApp();
 
-    router.push(context.url);
-    router.onReady(() => {
-      const matchedComponents = router.getMatchedComponents();
+  router.push(context.url);
+  router.onReady(() => {
+    context.rendered = () => {
+      context.state = store.state;
+    };
 
-      if (matchedComponents.length === 0) {
-        return reject({ status: 404 });
-      }
+    const matchedComponents = router.getMatchedComponents();
 
-      resolve(app);
-    }, reject);
-  })
-}
+    if (matchedComponents.length === 0) {
+      return reject({ status: 404 });
+    }
+
+    resolve(app);
+  }, reject);
+});

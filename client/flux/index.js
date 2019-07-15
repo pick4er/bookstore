@@ -9,9 +9,11 @@ Vue.use(Vuex);
 
 export default function createStore() {
   return new Vuex.Store({
-    state: {
+    state: () => ({
       order: {},
-    },
+      books: [],
+      error: null,
+    }),
     actions,
     getters,
     mutations,

@@ -1,5 +1,26 @@
+import api from 'api';
 
 export default {
+  async FETCH_BOOKS({ commit }) {
+    let isError;
+    const books = await api('books', {
+      json: true,
+    })
+      .catch(error => {
+        isError = true,
+        console.log(error);
+        commit({
+          error,
+          type: 'UPDATE_ERROR',
+        });
+      });
+    if (isError) return;
+
+    commit({
+      type: 'UPDATE_BOOKS',
+      books: [...books],
+    });
+  },
   ORDER_BOOK({ commit, dispatch, state }, { book }) {
     if (state.order[book.book_id]) {
       dispatch({
