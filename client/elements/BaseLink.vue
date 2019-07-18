@@ -39,7 +39,6 @@
         this.modes.forEach(mode => {
           modeMappings = modeMappings.concat(this.$style[mode])
         })
-
         return [
           this.$style.link,
           modeMappings,
@@ -50,7 +49,6 @@
       const element = this.isRouter ?
         'router-link' :
         'a';
-
       return createElement(
         element, 
         {
@@ -70,7 +68,6 @@
 <style lang="stylus" module>
   .link
     cursor pointer
-
     &.plain
       text-decoration none
       

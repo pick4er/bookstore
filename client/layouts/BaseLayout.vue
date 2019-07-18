@@ -15,7 +15,7 @@
     <main :class="$style.main">
       <slot></slot>
     </main>
-    
+
     <footer :class="$style.footer">
       <slot name="footer">
         <footer-section />
@@ -34,8 +34,8 @@
     components: {
       'nav-section': NavSection,
       'header-section': HeaderSection,
-      'footer-section': FooterSection,      
-    }
+      'footer-section': FooterSection,
+    },
   }
 </script>
 
@@ -69,4 +69,15 @@
   .footer
     margin-top x(35)
     flex-shrink 0
+
+  .portal
+    display block
+    width x(100)
+    height x(100)
+    min-width x(100)
+    min-height x(100)
+    border x(1) solid $black
+
+  .portalMessage
+    font-size x(24)
 </style>

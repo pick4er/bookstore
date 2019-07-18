@@ -10,17 +10,15 @@ const renderer = createBundleRenderer(ssrBundle, {
   inject: false,
   runInNewContext: false,
   clientManifest,
-  template: (html, context) => (
-    markup.render({
-      html,
-      state: context.renderState({
-        windowKey: '__INITIAL_STATE__',
-      }),
-      styles: context.renderStyles(),
-      scripts: context.renderScripts(),
-      resourceHints: context.renderResourceHints()
-    })
-  ),
+  template: (html, context) => markup.render({
+    html,
+    state: context.renderState({
+      windowKey: '__INITIAL_STATE__',
+    }),
+    styles: context.renderStyles(),
+    scripts: context.renderScripts(),
+    resourceHints: context.renderResourceHints(),
+  }),
 });
 
 async function prerender(ctx) {
@@ -39,12 +37,10 @@ async function prerender(ctx) {
         ctx.status = 500;
         ctx.body = 'Internal error';
       }
-
-      return;
-    })
+    });
 
   ctx.status = 200;
   ctx.body = html;
-};
+}
 
 export default prerender;
