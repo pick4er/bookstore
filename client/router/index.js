@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import isAuthorized from 'client/router/isAuthorized';
+
 Vue.use(Router);
 
 const CatalogPage = () => import(
@@ -31,9 +33,24 @@ export default function createRouter() {
       }
     },
     routes: [
-      { path: '/admin', component: AdminPage, props: true, },
-      { path: '/cart', component: CartPage, props: true, },
-      { path: '*', component: CatalogPage, props: true, },
+      { 
+        path: '/admin', 
+        component: isAuthorized(AdminPage), 
+        props: true,
+        meta: {
+          isAuth: true,
+        },
+      },
+      { 
+        path: '/cart', 
+        component: CartPage, 
+        props: true, 
+      },
+      { 
+        path: '*', 
+        component: CatalogPage, 
+        props: true, 
+      },
     ],
   });
 }

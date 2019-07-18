@@ -10,7 +10,6 @@ export default {
   ORDER_BOOK(state, { book }) {
     Vue.set(state.order, book.book_id, { ...book });
   },
-
   UPDATE_ORDER_COUNT(state, { key, incCount }) {
     const nextCount = (
       Number(state.order[key].count) +
@@ -19,4 +18,13 @@ export default {
 
     Vue.set(state.order[key], 'count', nextCount);
   },
+  UPDATE_AUTH(state, { isAuth }) {
+    Vue.set(state, 'isAuth', isAuth);
+  },
+  OPEN_ADMIN_MODAL(state) {
+    Vue.set(state, 'isAdminModalOpened', true);
+  },
+  CLOSE_ADMIN_MODAL(state) {
+    Vue.set(state, 'isAdminModalOpened', false);
+  }
 };

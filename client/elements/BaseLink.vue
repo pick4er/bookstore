@@ -18,6 +18,10 @@
         type: Boolean,
         default: false,
       },
+      to: {
+        type: String,
+        default: '',
+      },
       modes: {
         validator(values) {
           const modes = [
@@ -44,19 +48,50 @@
           modeMappings,
         ];
       },
+      element() {
+        return 'a';
+      }
     },
-    render(createElement) {
-      const element = this.isRouter ?
-        'router-link' :
-        'a';
-      return createElement(
-        element, 
+    methods: {
+      clickHandler(event) {
+        if (!this.isRouter) {
+          return this.$emit('click', event.target.value);
+        }
+
+        const { 
+          resolved: { 
+            meta: { 
+              isAuth: shouldAuth = false,
+            } = {},
+          } = {},
+        } = this.$router.resolve(this.to) || {};
+
+        const { 
+          isAuth: isAuthed = false,
+        } = this.$store.state || {};
+
+        if (shouldAuth && !isAuthed) {
+          return this.$store.commit({
+            type: 'OPEN_ADMIN_MODAL',
+          });
+        } else {
+          return this.$router.push(this.to);
+        }
+      }
+    },
+    render(h) {
+      return h(
+        this.element, 
         {
           class: this.linkClasses,
           attrs: {
             target: this.target,
             rel: this.rel,
+            to: this.to,
             ...this.$attrs,       
+          },
+          on: {
+            click: this.clickHandler,
           },
         },
         this.$slots.default,

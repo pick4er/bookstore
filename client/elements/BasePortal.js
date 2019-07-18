@@ -21,7 +21,7 @@ function findNode(id) {
 export default {
   name: 'base-portal',
   props: {
-    isOpen: {
+    shouldOpen: {
       type: Boolean,
       default: false,
     },
@@ -41,12 +41,12 @@ export default {
     };
   },
   watch: {
-    isOpen(isOpen, prevIsOpen) {
-      if (isOpen && !prevIsOpen) {
+    shouldOpen(shouldOpen, prevShouldOpen) {
+      if (shouldOpen && !prevShouldOpen) {
         return this.createPortal();
       }
 
-      if (!isOpen && prevIsOpen) {
+      if (!shouldOpen && prevShouldOpen) {
         return this.destroyPortal();
       }
     },

@@ -10,4 +10,4 @@ if (window.__INITIAL_STATE__) {
 
 router.onReady(() => {
   app.$mount('#app');
-});
+}, console.error);

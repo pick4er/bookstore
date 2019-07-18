@@ -5,8 +5,8 @@ import createRouter from 'client/router';
 import createStore from 'client/flux';
 
 export default function createApp() {
-  const router = createRouter();
   const store = createStore();
+  const router = createRouter();
 
   const app = new Vue({
     store,
