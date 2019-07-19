@@ -2,11 +2,25 @@
 export default function isAuthorized(Component) {
   return {
     name: 'with-authorization',
-    functional: true,
-    render(h, ctx) {
+    beforeMount() {
       const { 
-        isAuth = false,
-      } = ctx.parent.$store.state || {};
+        state: {
+          isAuth = false,
+          isAdminModalOpened = false,
+        } = {},
+      } = this.$store;
+
+      !(isAuth || isAdminModalOpened) &&
+      ctx.parent.$store.commit({
+        type: 'OPEN_ADMIN_MODAL',
+      });
+    },
+    render(h) {
+      const { 
+        state: {
+          isAuth = false,
+        } = {},
+      } = this.$store;
 
       if (!isAuth) {
         return h();
@@ -14,8 +28,8 @@ export default function isAuthorized(Component) {
 
       return h(
         Component,
-        ctx.data,
-        ctx.children,
+        this.data,
+        this.children,
       );
     }
   }

@@ -40,6 +40,11 @@ export default {
       portal: null,
     };
   },
+  created() {
+    if (this.shouldOpen && !isServer) {
+      this.createPortal();
+    }
+  },
   watch: {
     shouldOpen(shouldOpen, prevShouldOpen) {
       if (shouldOpen && !prevShouldOpen) {
@@ -57,6 +62,12 @@ export default {
     },
   },
   methods: {
+    onModalClick(event) {
+      return this.$emit('click', event);
+    },
+    onModalKeyup(event) {
+      return this.$emit('keyup', event);
+    },
     createPortal() {
       if (isServer) return;
 
@@ -64,6 +75,9 @@ export default {
       createNode(self.portalId);
       self.portal = new Vue({
         name: 'base-modal',
+        mounted() {
+          return this.$refs.portal.focus();
+        },
         render(h) {
           return h(
             'div',
@@ -71,8 +85,15 @@ export default {
               class: self.portalClass,
               attrs: {
                 id: self.portalId,
+                tabindex: -1,
+                autofocus: true,
                 ...self.$attrs,
               },
+              on: {
+                click: self.onModalClick,
+                keyup: self.onModalKeyup,
+              },
+              ref: 'portal',
               props: self.$props,
             },
             self.$slots.default,

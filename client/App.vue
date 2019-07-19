@@ -1,7 +1,11 @@
 <template>
   <base-layout>
     <router-view />
-    <admin-modal :isOpened="isAdminModalOpened" :next="next" />
+    <admin-modal 
+      :isOpened="isAdminModalOpened" 
+      :next="next"
+      :close="close"
+    />
   </base-layout>
 </template>
 
@@ -30,6 +34,11 @@
           type: 'CLOSE_ADMIN_MODAL',
         });
         this.$router.push('/admin');
+      },
+      close() {
+        this.$store.commit({
+          type: 'CLOSE_ADMIN_MODAL',
+        });
       },
     },
   }
