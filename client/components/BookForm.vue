@@ -92,6 +92,7 @@
       async handleSubmit() {
         await api('add_book', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -107,8 +108,10 @@
         this.selectedAuthors = [];
       },
       async onOpen() {
-        const result = await api('authors')
-          .catch(console.error);
+        const result = await api('authors', {
+          method: 'GET',
+          credentials: 'include',
+        }).catch(console.error);
         this.loadedAuthors = result;
       },
       onAuthorSelect(author_id) {

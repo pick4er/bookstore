@@ -11,7 +11,7 @@ export default function isAuthorized(Component) {
       } = this.$store;
 
       !(isAuth || isAdminModalOpened) &&
-      ctx.parent.$store.commit({
+      this.$store.commit({
         type: 'OPEN_ADMIN_MODAL',
       });
     },

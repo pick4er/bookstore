@@ -6,7 +6,10 @@
     @click="onModalClick"
     @keyup="onModalKeyup"
   >
-    <div :class="$style.modal">
+    <form 
+      @submit.prevent="onAuth"
+      :class="$style.modal"
+    >
       <base-input 
         required
         v-model="login"
@@ -30,10 +33,10 @@
         :class="[$style.input, $style.lastInput]"
       />
 
-      <base-button @click="onAuth">
+      <base-button type="submit">
         Войти
       </base-button>
-    </div>
+    </form>
   </base-portal>
 </template>
 
@@ -41,6 +44,8 @@
   import BasePortal from 'client/elements/BasePortal';
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
+
+  import api from 'api';
 
   const ESC_CODE = 27;
 
@@ -78,7 +83,18 @@
       }
     },
     methods: {
-      onAuth() {
+      async onAuth() {
+        await api('login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            login: this.login,
+            password: this.password,
+          },
+        }).catch(console.error);
         return this.next();
       },
       onModalClick(event) {

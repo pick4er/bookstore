@@ -24,7 +24,17 @@ export default function api(url, props = {}) {
   const options = getOptions(props);
 
   return fetch(fullUrl, options)
-    .then(res => res.json())
+    .then(res => {
+      return res
+        .text()
+        .then(text => {
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            return text;
+          }
+        })
+    })
     .catch(e => Promise.reject({
       error: e,
       message: 'Cannot parse the response',
