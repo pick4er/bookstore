@@ -3,7 +3,7 @@
     <router-view />
     <admin-modal 
       :isOpened="isAdminModalOpened" 
-      :next="next"
+      :auth="auth"
       :close="close"
     />
   </base-layout>
@@ -25,7 +25,7 @@
       }
     },
     methods: {
-      next() {
+      auth() {
         this.$store.commit({
           type: 'UPDATE_AUTH', 
           isAuth: true,

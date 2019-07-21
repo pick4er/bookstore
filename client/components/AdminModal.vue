@@ -30,12 +30,18 @@
         labelText="Пароль"
         placeholder="•••••••••••••"
         :modes="inputModes"
-        :class="[$style.input, $style.lastInput]"
+        :class="$style.input"
       />
 
-      <base-button type="submit">
-        Войти
-      </base-button>
+      <span v-if="error" :class="$style.error">
+        {{ error }}
+      </span>
+
+      <div :class="$style.lastBlock">
+        <base-button type="submit">
+          Войти
+        </base-button>
+      </div>
     </form>
   </base-portal>
 </template>
@@ -62,7 +68,7 @@
         required: true,
         default: false,
       },
-      next: {
+      auth: {
         type: Function,
         required: true,
       },
@@ -76,15 +82,21 @@
       return {
         login: '',
         password: '',
+        error: '',
+        timerId: null,
         inputModes: [
           'white',
           'textLeft',
         ],
       }
     },
+    beforeDestroy() {
+      clearTimeout(this.timerId);
+    },
     methods: {
       async onAuth() {
-        await api('login', {
+        let isError = false;
+        const response = await api('login', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -94,8 +106,17 @@
             login: this.login,
             password: this.password,
           },
-        }).catch(console.error);
-        return this.next();
+        }).catch(e => {
+          console.error(e);
+          isError = true
+        });
+        if (isError) return;
+
+        if (response.status === 'ok') {
+          return this.auth();
+        }
+
+        this.showError(response.message);
       },
       onModalClick(event) {
         if (event.target.closest(`.${this.$style.modal}`)) return;
@@ -105,6 +126,12 @@
         if (event.keyCode !== ESC_CODE) return;
         return this.close()
       },
+      showError(errorMessage) {
+        this.error = errorMessage;
+        this.timerId = setTimeout(() => {
+          this.error = null;
+        }, 6666);
+      }
     },
   }
 </script>
@@ -133,9 +160,16 @@
     width 100%
     flex-grow 0
   
-    &.lastInput
-      flex-grow 1
+  .error
+    font-size x(12)
+    color $error
+    margin-top x(6)
+
+  .lastBlock
+    flex-grow 1
+    display flex
+    align-items flex-end
 
   .input + .input
-    margin-top x(24)
+    margin-top x(18)
 </style>
