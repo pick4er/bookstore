@@ -18,13 +18,22 @@ export default {
 
     Vue.set(state.order[key], 'count', nextCount);
   },
-  UPDATE_AUTH(state, { isAuth }) {
-    Vue.set(state, 'isAuth', isAuth);
+  UPDATE_IS_AUTHED(state, { isAuthed }) {
+    Vue.set(state, 'isAuthed', isAuthed);
   },
-  OPEN_ADMIN_MODAL(state) {
-    Vue.set(state, 'isAdminModalOpened', true);
+  OPEN_LOGIN_MODAL(state) {
+    Vue.set(state, 'isLoginModalOpened', true);
   },
-  CLOSE_ADMIN_MODAL(state) {
-    Vue.set(state, 'isAdminModalOpened', false);
-  }
+  CLOSE_LOGIN_MODAL(state) {
+    Vue.set(state, 'isLoginModalOpened', false);
+  },
+  OPEN_REGISTER_MODAL(state) {
+    Vue.set(state, 'isRegisterModalOpened', true);
+  },
+  CLOSE_REGISTER_MODAL(state) {
+    Vue.set(state, 'isRegisterModalOpened', false);
+  },
+  UPDATE_USER_MODE(state, { userMode }) {
+    Vue.set(state, 'userMode', userMode);
+  },
 };

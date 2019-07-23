@@ -29,6 +29,8 @@
           const modes = [
             'accent',
             'plain',
+            'adjacentLeft',
+            'adjacentRight',
           ];
           return !values.find(
             value => !modes.includes(value),
@@ -59,54 +61,28 @@
         if (!this.isRouter) {
           return this.$emit('click', event.target.value);
         }
+        
+        const { 
+          state: { 
+            userMode = '',
+          } = {},
+        } = this.$store;
 
         const { 
           resolved: { 
             meta: { 
-              isAuth: shouldAuth = false,
+              authMode = '',
             } = {},
           } = {},
         } = this.$router.resolve(this.to) || {};
 
-        if (shouldAuth) {
-          let isAuthed = true;
-          this.isAuthenticated()
-            .catch(() => {
-              isAuthed = false;
-              return this.$store.commit({
-                type: 'OPEN_ADMIN_MODAL',
-              });
-            })
-          if (!isAuthed) return;
+        if (Boolean(authMode) && authMode !== userMode) {
+            return this.$store.commit({
+              type: 'OPEN_LOGIN_MODAL',
+            });
+        } else {
+          this.$router.push(this.to);
         }
-
-        this.$router.push(this.to);
-      },
-      async isAuthenticated() {
-        const { 
-          state: { isAuth = false } = {},
-        } = this.$store;
-
-        if (isAuth) return Promise.resolve(true);
-
-        let isError = false;
-        const response = await api('is_authenticated', {
-          credentials: 'include',
-        }).catch(e => {
-          console.error(e);
-          isError = true;
-        });
-        if (isError) return;
-
-        if (response.status === 'ok') {
-          this.$store.commit({
-            type: 'UPDATE_AUTH',
-            isAuth: true,
-          })
-          return Promise.resolve(true);
-        }
-
-        return Promise.reject(false);
       },
     },
     render(h) {
@@ -137,8 +113,11 @@
       text-decoration none
       
     &.accent
-      color $black
-      font-family $robotoBold
-      text-decoration underline
-      font-size x(13)
+      accentFont()
+      
+    &.adjacentLeft
+      margin-left x(16)
+      
+    &.adjacentRight
+      margin-right x(16)
 </style>

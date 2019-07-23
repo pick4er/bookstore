@@ -1,15 +1,26 @@
 <template>
-  <base-portal 
-    id="admin-modal" 
-    :shouldOpen="isOpened" 
-    :portalClass="$style.background"
-    @click="onModalClick"
-    @keyup="onModalKeyup"
+  <base-modal
+    id="register-modal"
+    :modalClass="$style.modal"
+    :isOpened="isOpened"
+    :close="close"
   >
     <form 
-      @submit.prevent="onAuth"
-      :class="$style.modal"
+      @submit.prevent="onRegister"
+      :class="$style.form"
     >
+      <base-input 
+        required
+        v-model="email"
+        name="email"
+        id="email"
+        type="email"
+        labelText="Email"
+        placeholder="pick4er@gmail.com"
+        :modes="inputModes"
+        :class="$style.input"
+      />
+
       <base-input 
         required
         v-model="login"
@@ -39,25 +50,25 @@
 
       <div :class="$style.lastBlock">
         <base-button type="submit">
-          Войти
+          Зарегистрироваться
         </base-button>
       </div>
     </form>
-  </base-portal>
+  </base-modal>
 </template>
 
 <script>
+  import BaseModal from 'client/elements/BaseModal';
   import BasePortal from 'client/elements/BasePortal';
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
 
   import api from 'api';
 
-  const ESC_CODE = 27;
-
   export default {
-    name: 'admin-modal',
+    name: 'register-modal',
     components: {
+      'base-modal': BaseModal,
       'base-portal': BasePortal,
       'base-button': BaseButton,
       'base-input': BaseInput,
@@ -68,7 +79,7 @@
         required: true,
         default: false,
       },
-      auth: {
+      register: {
         type: Function,
         required: true,
       },
@@ -80,6 +91,7 @@
     },
     data() {
       return {
+        email: '',
         login: '',
         password: '',
         error: '',
@@ -94,15 +106,15 @@
       clearTimeout(this.timerId);
     },
     methods: {
-      async onAuth() {
+      async onRegister() {
         let isError = false;
-        const response = await api('login', {
+        const response = await api('register', {
           method: 'POST',
-          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
           body: {
+            email: this.email,
             login: this.login,
             password: this.password,
           },
@@ -113,18 +125,10 @@
         if (isError) return;
 
         if (response.status === 'ok') {
-          return this.auth();
+          return this.register();
         }
 
         this.showError(response.message);
-      },
-      onModalClick(event) {
-        if (event.target.closest(`.${this.$style.modal}`)) return;
-        return this.close();
-      },
-      onModalKeyup(event) {
-        if (event.keyCode !== ESC_CODE) return;
-        return this.close()
       },
       showError(errorMessage) {
         this.error = errorMessage;
@@ -137,24 +141,13 @@
 </script>
 
 <style lang="stylus" module>
-  .background
-    flexCenter()
-    outline none
-    position fixed
-    background-color $modalBackground
-    top x(0)
-    left x(0)
-    width 100%
-    height 100%
-
   .modal
+    height x(350)
+    width x(420)
+
+  .form
     flexColumn()
-    background-color $white
-    width 100%
-    max-width x(424)
     height 100%
-    max-height x(288)
-    padding x(24)
 
   .input
     width 100%

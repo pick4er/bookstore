@@ -3,6 +3,8 @@ import Router from 'vue-router';
 
 import isAuthorized from 'client/router/isAuthorized';
 
+import { ADMIN_MODE } from 'helpers/constants';
+
 Vue.use(Router);
 
 const CatalogPage = () => import(
@@ -16,6 +18,10 @@ const AdminPage = () => import(
 const CartPage = () => import(
   /* webpackChunkName: "CartPage" */ 
   'client/pages/CartPage'
+);
+const UserPage = () => import(
+  /* webpackChunkName: "UserPage" */ 
+  'client/pages/UserPage'
 );
 
 export default function createRouter() {
@@ -38,13 +44,21 @@ export default function createRouter() {
         component: isAuthorized(AdminPage), 
         props: true,
         meta: {
-          isAuth: true,
+          authMode: ADMIN_MODE,
         },
       },
       { 
         path: '/cart', 
         component: CartPage, 
         props: true, 
+      },
+      {
+        path: '/user/:id',
+        component: isAuthorized(UserPage),
+        props: true,
+        meta: {
+          isAuth: true,
+        },
       },
       { 
         path: '*', 
