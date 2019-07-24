@@ -63,7 +63,10 @@
             /
           </span>
 
-          <base-link :modes="['accent']">
+          <base-link 
+            :modes="['accent']"
+            @click="logout"
+          >
             Выйти
           </base-link>
         </template>
@@ -82,6 +85,7 @@
 <script>
   import BaseLink from 'client/elements/BaseLink';
   import { ADMIN_MODE } from 'helpers/constants';
+  import api from 'api';
 
   export default {
     name: 'nav-section',
@@ -110,8 +114,21 @@
           type: 'OPEN_LOGIN_MODAL',
         });
       },
-      logout() {
-        console.log('TODO');
+      async logout() {
+        await api('logout', {
+          method: 'POST',
+          credentials: 'include',
+        }).catch(console.error);
+
+        this.$store.commit({
+          type: 'UPDATE_IS_AUTHED',
+          isAuthed: false,
+        });
+        this.$store.commit({
+          type: 'UPDATE_USER_MODE',
+          userMode: '',
+        });
+
         return;
       },
     }

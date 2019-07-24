@@ -11,11 +11,11 @@
     >
       <base-input 
         required
-        v-model="login"
-        name="login"
-        id="login"
-        labelText="Логин"
-        placeholder="pick4er"
+        v-model="email"
+        name="email"
+        id="email"
+        labelText="Email"
+        placeholder="pick4er@gmail.com"
         :modes="inputModes"
         :class="$style.input"
       />
@@ -79,7 +79,7 @@
     },
     data() {
       return {
-        login: '',
+        email: '',
         password: '',
         error: '',
         timerId: null,
@@ -102,7 +102,7 @@
             'Content-Type': 'application/json',
           },
           body: {
-            login: this.login,
+            email: this.email,
             password: this.password,
           },
         }).catch(e => {

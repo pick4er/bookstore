@@ -43,7 +43,6 @@
       }
     },
     methods: {
-      // same as in elements/BaseLink.vue
       async isAuthenticated() {
         const { 
           state: { isAuthed = false } = {},
@@ -88,6 +87,9 @@
         });
       },
       register() {
+        this.$store.commit({
+          type: 'CLOSE_REGISTER_MODAL',
+        });
         return;
       },
       closeLoginModal() {

@@ -22,7 +22,6 @@
       />
 
       <base-input 
-        required
         v-model="login"
         name="login"
         id="login"
