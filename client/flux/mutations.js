@@ -36,4 +36,10 @@ export default {
   UPDATE_USER_MODE(state, { userMode }) {
     Vue.set(state, 'userMode', userMode);
   },
+  FORGET_USER(state) {
+    Vue.set(state, 'user', {});
+  },
+  UPDATE_USER(state, { user }) {
+    Vue.set(state, 'user', user);
+  },
 };

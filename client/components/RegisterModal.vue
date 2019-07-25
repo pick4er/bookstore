@@ -80,10 +80,6 @@
       },
       register: {
         type: Function,
-        required: true,
-      },
-      close: {
-        type: Function,
         required: false,
         default: () => {},
       },
@@ -103,6 +99,13 @@
     },
     beforeDestroy() {
       clearTimeout(this.timerId);
+    },
+    watch: {
+      isOpened(nextIsOpened, isOpened) {
+        if (isOpened && !nextIsOpened) {
+          this.resetForm();
+        }
+      },
     },
     methods: {
       async onRegister() {
@@ -124,17 +127,28 @@
         if (isError) return;
 
         if (response.status === 'ok') {
+          this.close();
           return this.register();
         }
 
         this.showError(response.message);
+      },
+      close() {
+        this.$store.commit({
+          type: 'CLOSE_REGISTER_MODAL',
+        });
       },
       showError(errorMessage) {
         this.error = errorMessage;
         this.timerId = setTimeout(() => {
           this.error = null;
         }, 6666);
-      }
+      },
+      resetForm() {
+        this.email = '';
+        this.password = '';
+        this.error = '';
+      },
     },
   }
 </script>
@@ -153,9 +167,7 @@
     flex-grow 0
   
   .error
-    font-size x(12)
-    color $error
-    margin-top x(6)
+    errorText()
 
   .lastBlock
     flex-grow 1

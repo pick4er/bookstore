@@ -1,12 +1,17 @@
 <template>
   <div>
-    Пользователь {{ $route.params.id }}
+    <user-form />
   </div>
 </template>
 
 <script>
+  import UserForm from 'client/components/UserForm';
+
   export default {
     name: 'user-page',
+    components: {
+      'user-form': UserForm,
+    },
   }
 </script>
 

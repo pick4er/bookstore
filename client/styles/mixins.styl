@@ -24,6 +24,13 @@ flexBetween()
   justify-content space-between
   align-items center
 
+flexStretch()
+  display flex
+  flex-flow row nowrap
+  justify-content space-around
+  align-items stretch
+  width 100%
+
 flexColumn()
   display flex
   flex-flow column nowrap
@@ -38,3 +45,15 @@ accentFont()
   font-family $robotoBold
   text-decoration underline
   font-size x(13)
+
+errorText()
+  display block
+  font-size x(12)
+  color $error
+  margin-top x(6)
+
+successText()
+  display block
+  font-size x(12)
+  color $success
+  margin-top x(6)  

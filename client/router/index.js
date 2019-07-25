@@ -53,7 +53,7 @@ export default function createRouter() {
         props: true, 
       },
       {
-        path: '/user/:id',
+        path: '/user/:id/edit',
         component: isAuthorized(UserPage),
         props: true,
         meta: {

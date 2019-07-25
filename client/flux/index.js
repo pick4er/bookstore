@@ -13,6 +13,7 @@ export default function createStore() {
       order: {},
       books: [],
       error: null,
+      user: {},
       userMode: null,
       isAuthed: null,
       isLoginModalOpened: null,

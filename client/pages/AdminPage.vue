@@ -20,11 +20,7 @@
 
 <style lang="stylus" module>
   .form
-    display flex
-    flex-flow row nowrap
-    justify-content space-around
-    align-items stretch
-    width 100%
+    flexStretch()
 
     .block
       max-width x(375)

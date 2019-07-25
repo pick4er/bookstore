@@ -12,10 +12,10 @@
       <div v-else-if="isAuthed">
         <base-link
           isRouter
-          to="/user/urusov"
+          :to="`/user/${userRouteName}/edit`"
           target="self"
           :modes="['accent']"
-        >Юрий Урусов</base-link>
+        >{{ displayName }}</base-link>
 
         <span :class="$style.slash">
           /
@@ -24,18 +24,14 @@
         <base-link 
           :modes="['accent']"
           @click="logout"
-        >
-          Выйти
-        </base-link>
+        >Выйти</base-link>
       </div>
 
       <div v-else>
         <base-link 
           :modes="['accent']"
           @click="openRegisterModal"
-        >
-          Зарегистрироваться
-        </base-link>
+        >Зарегистрироваться</base-link>
 
         <span :class="$style.slash">
           /
@@ -44,9 +40,7 @@
         <base-link 
           :modes="['accent']"
           @click="openLoginModal"
-        >
-          Войти
-        </base-link>
+        >Войти</base-link>
       </div>
     </li>
     <li>
@@ -54,10 +48,10 @@
         <template v-if="isAdmin">
           <base-link
             isRouter
-            to="/user/urusov"
+            :to="`/user/${userRouteName}/edit`"
             target="self"
             :modes="['accent']"
-          >Юрий Урусов</base-link>
+          >{{ displayName }}</base-link>
 
           <span :class="$style.slash">
             /
@@ -66,9 +60,7 @@
           <base-link 
             :modes="['accent']"
             @click="logout"
-          >
-            Выйти
-          </base-link>
+          >Выйти</base-link>
         </template>
 
         <base-link 
@@ -102,6 +94,12 @@
       isAdmin() {
         return this.$store.state.userMode === ADMIN_MODE;
       },
+      displayName() {
+        return this.$store.getters.userDisplayName;
+      },
+      userRouteName() {
+        return this.$store.getters.userRouteName;
+      },
     },
     methods: {
       openRegisterModal() {
@@ -127,6 +125,10 @@
         this.$store.commit({
           type: 'UPDATE_USER_MODE',
           userMode: '',
+        });
+        this.$store.commit({
+          type: 'FORGET_USER',
+          user: {},
         });
 
         return;

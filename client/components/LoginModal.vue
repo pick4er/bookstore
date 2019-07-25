@@ -51,6 +51,7 @@
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
 
+  import { ADMIN_MODE } from 'helpers/constants';
   import api from 'api';
 
   export default {
@@ -68,10 +69,6 @@
         default: false,
       },
       auth: {
-        type: Function,
-        required: true,
-      },
-      close: {
         type: Function,
         required: false,
         default: () => {},
@@ -91,6 +88,13 @@
     },
     beforeDestroy() {
       clearTimeout(this.timerId);
+    },
+    watch: {
+      isOpened(nextIsOpened, isOpened) {
+        if (isOpened && !nextIsOpened) {
+          this.resetForm();
+        }
+      },
     },
     methods: {
       async onAuth() {
@@ -112,17 +116,45 @@
         if (isError) return;
 
         if (response.status === 'ok') {
+          this.$store.commit({
+            type: 'UPDATE_USER',
+            user: response.user,
+          });
+          this.$store.commit({
+            type: 'UPDATE_IS_AUTHED', 
+            isAuthed: true,
+          });
+
+          if (response.user.login === 'pick4er') {
+            this.$store.commit({
+              type: 'UPDATE_USER_MODE', 
+              userMode: ADMIN_MODE,
+            });
+          }
+
+          this.close();
+
           return this.auth();
         }
 
         this.showError(response.message);
+      },
+      close() {
+        this.$store.commit({
+          type: 'CLOSE_LOGIN_MODAL',
+        });
       },
       showError(errorMessage) {
         this.error = errorMessage;
         this.timerId = setTimeout(() => {
           this.error = null;
         }, 6666);
-      }
+      },
+      resetForm() {
+        this.email = '';
+        this.password = '';
+        this.error = '';
+      },
     },
   }
 </script>
@@ -143,9 +175,7 @@
     flex-grow 0
   
   .error
-    font-size x(12)
-    color $error
-    margin-top x(6)
+    errorText()
 
   .lastBlock
     flex-grow 1

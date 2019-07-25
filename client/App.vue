@@ -1,16 +1,8 @@
 <template>
   <base-layout>
     <router-view />
-    <login-modal 
-      :isOpened="isLoginModalOpened" 
-      :auth="auth"
-      :close="closeLoginModal"
-    />
-    <register-modal
-      :isOpened="isRegisterModalOpened"
-      :register="register"
-      :close="closeRegisterModal"
-    />
+    <login-modal :isOpened="isLoginModalOpened" />
+    <register-modal :isOpened="isRegisterModalOpened" />
   </base-layout>
 </template>
 
@@ -60,10 +52,17 @@
         if (isError) return;
 
         if (response.status === 'ok') {
+          const { user } = response;
+
           this.$store.commit({
             type: 'UPDATE_IS_AUTHED',
             isAuthed: true,
-          })
+          });
+          this.$store.commit({
+            type: 'UPDATE_USER',
+            user,
+          });
+
           return Promise.resolve(true);
         }
 
@@ -73,35 +72,6 @@
         });
         return Promise.reject(false);
       },
-      auth() {
-        this.$store.commit({
-          type: 'UPDATE_IS_AUTHED', 
-          isAuthed: true,
-        });
-        this.$store.commit({
-          type: 'UPDATE_USER_MODE', 
-          userMode: ADMIN_MODE,
-        });
-        this.$store.commit({
-          type: 'CLOSE_LOGIN_MODAL',
-        });
-      },
-      register() {
-        this.$store.commit({
-          type: 'CLOSE_REGISTER_MODAL',
-        });
-        return;
-      },
-      closeLoginModal() {
-        this.$store.commit({
-          type: 'CLOSE_LOGIN_MODAL',
-        });
-      },
-      closeRegisterModal() {
-        this.$store.commit({
-          type: 'CLOSE_REGISTER_MODAL',
-        });
-      }
     },
   }
 </script>

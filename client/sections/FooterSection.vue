@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.footer">
-    2019 /&nbsp;
+    WTFPL&nbsp;/&nbsp;
     <base-link href="http://pick4er.com">
       @pick4er
     </base-link>
