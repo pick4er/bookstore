@@ -1,9 +1,46 @@
 import api from 'api';
 
-import { stringify } from 'query-string';
 import { ADMIN_MODE } from 'helpers/constants';
 
 export default {
+  async CREATE_ORDER({ commit, state }, { onSuccess, onError }) {
+    const { user: { user_id } = {} } = state;
+
+    let isError = false;
+    const response = await api('create_order', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {
+        user_id,
+      },
+    }).catch(error => {
+      isError = true;
+      console.error(error);
+      commit({
+        type: 'UPDATE_ERROR',
+        error,
+      });
+    });
+    if (isError) return;
+
+    if (response.status !== 'ok') {
+      commit({
+        type: 'UPDATE_ERROR',
+        error: response.message,
+      });
+      onError(response.message);
+
+      return;
+    }
+
+    commit({
+      type: 'CLEAR_CART',
+    });
+    onSuccess(response.message);
+  },
   async REGISTER({ commit, state }, { email, login, password, onError }) {
     let isError = false;
     const response = await api('register', {
@@ -215,7 +252,7 @@ export default {
         user_id,
       } = {},
     } = state;
-    const url = `get_cart/?${stringify({ user_id })}`;
+    const url = `get_cart/?user_id=${user_id}`;
 
     let isError = false;
     const result = await api(url, {
@@ -246,39 +283,57 @@ export default {
     });
   },
 
-  ORDER_BOOK({ commit, dispatch, state }, { book }) {
-    if (state.order[book.book_id]) {
-      dispatch({
-        type: 'UPDATE_ORDER_COUNT',
-        incCount: book.count,
-        key: book.book_id,
-      });
-    } else {
-      const countNum = Number(book.count);
-      if (isNaN(countNum)) {
-        return;
-      }
+  async ORDER_BOOK({ commit, dispatch, state }, { book_id, count }) {
+    const { user: { user_id } = {}, isAuthed, } = state;
 
-      commit({
-        type: 'ORDER_BOOK',
-        book: {
-          ...book,
-          count: countNum,
-        },
-      });
-    }
-  },
+    if (!isAuthed) {
+      alert(`
+Авторизуйтесь, пожалуйста.\
 
-  UPDATE_ORDER_COUNT({ commit, state }, { incCount, key }) {
-    const incCountNum = Number(incCount);
-    if (isNaN(incCountNum)) {
+Например:\
+
+- Email: pick4er@gmail.com\
+
+- Пароль: 12345\
+      `);
       return;
     }
 
-    commit({
-      type: 'UPDATE_ORDER_COUNT',
-      incCount: incCountNum,
-      key,
-    });
+    let isError = false;
+    const result = await api('update_cart', {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {
+        user_id,
+        book_id,
+        qty: count,
+      },
+    }).catch(error => {
+      isError = true;
+      console.error(error);
+      commit({
+        type: 'UPDATE_ERROR',
+        error,
+      });
+    })
+    if (isError) return;
+
+    if (result.status !== 'ok') {
+      commit({
+        type: 'UPDATE_ERROR',
+        error: result.message,
+      });
+
+      return;
+    }
+
+    if (result.status === 'ok') {
+      dispatch({
+        type: 'FETCH_CART',
+      });
+    }
   },
 };

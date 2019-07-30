@@ -64,6 +64,7 @@
         </template>
 
         <base-link 
+          v-if="isAuthed"
           isRouter
           to="/cart"
           target="_self"

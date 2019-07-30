@@ -49,8 +49,11 @@ export default function createRouter() {
       },
       { 
         path: '/cart', 
-        component: CartPage, 
+        component: isAuthorized(CartPage), 
         props: true, 
+        meta: {
+          isAuth: true,
+        },
       },
       {
         path: '/user/:id/edit',

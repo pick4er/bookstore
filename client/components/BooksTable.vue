@@ -94,7 +94,7 @@
       orderBook(book) {
         this.$store.dispatch({
           type: 'ORDER_BOOK',
-          book,
+          ...book,
         });
       },
     },

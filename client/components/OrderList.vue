@@ -35,13 +35,30 @@
         <h3>Итого:</h3>
         <span>{{ getTotal() }} руб.</span>
       </div>
+
+      <base-button 
+        type="button"
+        :class="$style.submitButton"
+        @click="createOrder"
+      >Оформить заказ</base-button>
+    </template>
+
+    <template v-else>
+      <h4 
+        :class="$style.center"
+      >Добавьте что-нибудь в корзину</h4>
     </template>
   </div>
 </template>
 
 <script>
+  import BaseButton from 'client/elements/BaseButton';
+
   export default {
     name: 'order-list',
+    components: {
+      'base-button': BaseButton,
+    },
     computed: {
       cart() {
         return this.$store.state.cart;
@@ -58,6 +75,19 @@
         return this.cart.reduce((total, book, i) => {
           return total + book.price * book.order_qty;
         }, 0);
+      },
+      createOrder() {
+        this.$store.dispatch({
+          type: 'CREATE_ORDER',
+          onSuccess: this.onSuccessOrder,
+          onError: this.onErrorOrder,
+        });
+      },
+      onSuccessOrder() {
+        alert('Заказ успешно создан!');
+      },
+      onErrorOrder() {
+        alert('Ошибка при создании заказа. Попробуйте еще раз');
       },
     },
   };
@@ -123,4 +153,12 @@
     span
       font-size x(36)
       font-family $robotoBold
+  
+  .submitButton
+    blockCenter()
+    margin-top x(30)
+    max-width x(373)
+    
+  .center
+    blockCenter()
 </style>
