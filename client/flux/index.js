@@ -12,6 +12,7 @@ export default function createStore() {
     state: () => ({
       order: {},
       books: [],
+      authors: [],
       error: null,
       user: {},
       userMode: null,

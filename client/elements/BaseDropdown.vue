@@ -13,7 +13,7 @@
         @click="isOpen = !isOpen"
       >
         <template v-if="selectionedItemValue">
-          <span :class="$style.selection">
+          <span :class="[$style.selection, selectionClass]">
             {{ selectionedItemValue }}
           </span>
         </template>
@@ -31,7 +31,7 @@
       </button>
       <template v-if="isOpen">
         <ul 
-          :class="$style.list"
+          :class="[$style.list, listClass]"
           :style="listPosition"
         >
           <li 
@@ -45,9 +45,8 @@
               @mouseover="selectionedItemKey = pickKey(value)"
               @focus="selectionedItemKey = pickKey(value)"
               @click="onItemSelect"
-            >
-              {{ pickValue(value) }}
-            </button>
+              :class="buttonClass"
+            >{{ pickValue(value) }}</button>
           </li>
         </ul>
       </template> 
@@ -96,6 +95,18 @@
         default: '',
       },
       labelClass: {
+        type: String,
+        default: '',
+      },
+      listClass: {
+        type: String,
+        default: '',
+      },
+      buttonClass: {
+        type: String,
+        default: '',
+      },
+      selectionClass: {
         type: String,
         default: '',
       },
@@ -160,7 +171,7 @@
         }
 
         if (this.isOpen === true && !this.selectionedItemKey) {
-          return 'Выберите автора';
+          return 'Выбирайте';
         }
       },
       selectionedItemValue() {

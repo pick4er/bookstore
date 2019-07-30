@@ -15,6 +15,11 @@
       :class="inputClasses"
       :aria-label="labelText"
     />
+    <template v-if="Boolean(hintText)">
+      <span :class="[$style.hint, hintClass]">
+        {{ hintText }}
+      </span>
+    </template>
   </span>
 </template>
 
@@ -36,6 +41,14 @@
         default: '',
       },
       labelClass: {
+        type: String,
+        default: '',
+      },
+      hintText: {
+        type: String,
+        default: '',
+      },
+      hintClass: {
         type: String,
         default: '',
       },
@@ -124,4 +137,12 @@
       &:after
         content '*'
         color $required
+
+  .hint
+    display block
+    font-size x(12)
+    font-family $robotoLight
+    font-style italic
+    font-weight normal
+    margin-top x(4)
 </style>

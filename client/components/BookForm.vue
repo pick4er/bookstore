@@ -1,7 +1,10 @@
 <template>
-  <div :class="$style.wrap">
-    <h4>Добавить книгу</h4>
-    <form @submit.prevent="handleSubmit">
+  <base-form-layout :onSubmit="handleSubmit">
+    <template #header>
+      <h4>Добавить книгу</h4>
+    </template>
+
+    <template #inputs>
       <base-input 
         v-model="bookTitle" 
         name="bookTitle"
@@ -10,6 +13,16 @@
         placeholder="Судьба человека"
         :modes="inputModes"
         :required="true"
+        :class="$style.formInput"
+      />
+
+      <base-input 
+        v-model="price" 
+        name="price"
+        id="price" 
+        labelText="Цена (руб.)"
+        placeholder="100"
+        :modes="inputModes"
         :class="$style.formInput"
       />
 
@@ -38,21 +51,22 @@
           </ul>
         </template> 
       </div>
+    </template>
 
+    <template #submitButton>
       <base-button 
         type="submit"
         :class="$style.formInput" 
-      >
-        Добавить книгу
-      </base-button>
-    </form>
-  </div>
+      >Добавить книгу</base-button>
+    </template>
+  </base-form-layout>
 </template>
 
 <script>
-  import BaseInput from 'client/elements/BaseInput'
-  import BaseDropdown from 'client/elements/BaseDropdown'
-  import BaseButton from 'client/elements/BaseButton'
+  import BaseFormLayout from 'client/layouts/BaseFormLayout';
+  import BaseDropdown from 'client/elements/BaseDropdown';
+  import BaseButton from 'client/elements/BaseButton';
+  import BaseInput from 'client/elements/BaseInput';
 
   import api from 'api';
 
@@ -62,16 +76,17 @@
       'base-input': BaseInput,
       'base-button': BaseButton,
       'base-dropdown': BaseDropdown,
+      'base-form-layout': BaseFormLayout,
     },
     data() {
       return {
         bookTitle: '',
+        price: '',
         selectedAuthors: [],
-        loadedAuthors: [],
         inputModes: [
           'white', 
           'textLeft',
-        ],        
+        ],
       }
     },
     computed: {
@@ -87,6 +102,9 @@
           ),
         );
       },
+      loadedAuthors() {
+        return this.$store.state.authors || [];
+      },
     },
     methods: {
       async handleSubmit() {
@@ -98,6 +116,7 @@
           },
           body: {
             title: this.bookTitle,
+            price: this.price,
             authors: this.selectedAuthors.map(v => v.author_id),
           },
         }).catch(console.error);
@@ -105,14 +124,15 @@
       },
       resetForm() {
         this.bookTitle = '';
+        this.price = '';
         this.selectedAuthors = [];
       },
-      async onOpen() {
-        const result = await api('authors', {
-          method: 'GET',
-          credentials: 'include',
-        }).catch(console.error);
-        this.loadedAuthors = result;
+      onOpen() {
+        if ((this.loadedAuthors || []).length !== 0) return;
+
+        this.$store.dispatch({
+          type: 'FETCH_AUTHORS',
+        });
       },
       onAuthorSelect(author_id) {
         this.selectedAuthors = this.selectedAuthors.concat(
@@ -131,19 +151,10 @@
 </script>
 
 <style lang="stylus" module>
-  .wrap
-    flexColumn()
-
-    form
-      flex-grow 1
-      flexColumn()
-
-      .selectedAuthorsList
-        flex-grow 1
-
   .selectedAuthorsList
-    margin-top x(6)
-    margin-bottom x(6)
+    margin-top x(10)
+    margin-bottom x(10)
+    min-height x(20)
 
     ul
       list-style none

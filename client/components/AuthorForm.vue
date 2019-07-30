@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <h4>Добавить автора</h4>
-    <form @submit.prevent="handleSubmit">
+  <base-form-layout :onSubmit="handleSubmit">
+    <template #header>
+      <h4>Добавить автора</h4>
+    </template>
+    <template #inputs>
       <base-input 
         v-model="surname" 
         name="surname"
@@ -33,19 +35,22 @@
         :class="$style.formInput"
       />
 
+    </template>
+    <template #submitButton>
       <base-button 
         type="submit"
         :class="$style.formInput"
       >
         Добавить автора
       </base-button>
-    </form>
-  </div>  
+    </template>
+  </base-form-layout>
 </template>
 
 <script>
-  import BaseInput from 'client/elements/BaseInput'
-  import BaseButton from 'client/elements/BaseButton'
+  import BaseFormLayout from 'client/layouts/BaseFormLayout';
+  import BaseInput from 'client/elements/BaseInput';
+  import BaseButton from 'client/elements/BaseButton';
 
   import api from 'api';
 
@@ -54,6 +59,7 @@
     components: {
       'base-input': BaseInput,
       'base-button': BaseButton,
+      'base-form-layout': BaseFormLayout,
     },
     data() {
       return {

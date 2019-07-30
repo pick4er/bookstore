@@ -7,6 +7,9 @@ export default {
   UPDATE_BOOKS(state, { books }) {
     Vue.set(state, 'books', books);
   },
+  UPDATE_AUTHORS(state, { authors }) {
+    Vue.set(state, 'authors', authors);
+  },
   ORDER_BOOK(state, { book }) {
     Vue.set(state.order, book.book_id, { ...book });
   },

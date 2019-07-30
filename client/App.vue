@@ -63,6 +63,13 @@
             user,
           });
 
+          if (user.login === 'pick4er') {
+            this.$store.commit({
+              type: 'UPDATE_USER_MODE', 
+              userMode: ADMIN_MODE,
+            });
+          }
+
           return Promise.resolve(true);
         }
 

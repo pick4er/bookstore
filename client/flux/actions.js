@@ -5,20 +5,38 @@ export default {
     let isError;
     const books = await api('books', {
       json: true,
-    })
-      .catch(error => {
-        isError = true,
-        console.log(error);
-        commit({
-          error,
-          type: 'UPDATE_ERROR',
-        });
+    }).catch(error => {
+      isError = true,
+      console.log(error);
+      commit({
+        error,
+        type: 'UPDATE_ERROR',
       });
+    });
     if (isError) return;
 
     commit({
       type: 'UPDATE_BOOKS',
       books: [...books],
+    });
+  },
+  async FETCH_AUTHORS({ commit }) {
+    let isError;
+    const authors = await api('authors', {
+      credentials: 'include',
+    }).catch(error => {
+      isError = true;
+      console.error(error);
+      commit({
+        error,
+        type: 'UPDATE_ERROR',
+      });
+    });
+    if (isError) return;
+
+    commit({
+      type: 'UPDATE_AUTHORS',
+      authors: [...authors],
     });
   },
   ORDER_BOOK({ commit, dispatch, state }, { book }) {
