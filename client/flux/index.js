@@ -10,9 +10,9 @@ Vue.use(Vuex);
 export default function createStore() {
   return new Vuex.Store({
     state: () => ({
-      order: {},
       books: [],
       authors: [],
+      cart: [],
       error: null,
       user: {},
       userMode: null,

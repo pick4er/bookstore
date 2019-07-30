@@ -3,7 +3,7 @@
     <h4>Оформить заказ</h4>
     <form @submit.prevent="handleSubmit">
       <base-input 
-        required
+        :required="true"
         v-model="phone" 
         name="phone"
         id="phone" 
@@ -36,9 +36,7 @@
       <base-button 
         type="submit"
         :class="$style.formInput"
-      >
-        Заказать
-      </base-button>
+      >Заказать</base-button>
     </form>
   </div>
 </template>

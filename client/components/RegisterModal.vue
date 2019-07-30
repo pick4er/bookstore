@@ -62,8 +62,6 @@
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
 
-  import api from 'api';
-
   export default {
     name: 'register-modal',
     components: {
@@ -77,11 +75,6 @@
         type: Boolean,
         required: true,
         default: false,
-      },
-      register: {
-        type: Function,
-        required: false,
-        default: () => {},
       },
     },
     data() {
@@ -108,30 +101,14 @@
       },
     },
     methods: {
-      async onRegister() {
-        let isError = false;
-        const response = await api('register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            email: this.email,
-            login: this.login,
-            password: this.password,
-          },
-        }).catch(e => {
-          console.error(e);
-          isError = true
+      onRegister() {
+        this.$store.dispatch({
+          type: 'REGISTER',
+          email: this.email,
+          login: this.login,
+          password: this.password,
+          onError: this.showError,
         });
-        if (isError) return;
-
-        if (response.status === 'ok') {
-          this.close();
-          return this.register();
-        }
-
-        this.showError(response.message);
       },
       close() {
         this.$store.commit({

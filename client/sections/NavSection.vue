@@ -77,7 +77,6 @@
 <script>
   import BaseLink from 'client/elements/BaseLink';
   import { ADMIN_MODE } from 'helpers/constants';
-  import api from 'api';
 
   export default {
     name: 'nav-section',
@@ -86,7 +85,7 @@
     },
     computed: {
       booksCount() {
-        return this.$store.getters.booksCount;
+        return (this.$store.state.cart || []).length || 0;
       },
       isAuthed() {
         return this.$store.state.isAuthed;
@@ -112,26 +111,10 @@
           type: 'OPEN_LOGIN_MODAL',
         });
       },
-      async logout() {
-        await api('logout', {
-          method: 'POST',
-          credentials: 'include',
-        }).catch(console.error);
-
-        this.$store.commit({
-          type: 'UPDATE_IS_AUTHED',
-          isAuthed: false,
+      logout() {
+        this.$store.dispatch({
+          type: 'LOGOUT',
         });
-        this.$store.commit({
-          type: 'UPDATE_USER_MODE',
-          userMode: '',
-        });
-        this.$store.commit({
-          type: 'FORGET_USER',
-          user: {},
-        });
-
-        return;
       },
     }
   }

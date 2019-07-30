@@ -29,6 +29,7 @@
       <base-dropdown
         labelText="Авторы"
         :class="$style.formInput"
+        :listClass="$style.authorsList"
         :values="unselectedAuthors"
         titleKey="display_name"
         selectionKey="author_id"
@@ -151,6 +152,9 @@
 </script>
 
 <style lang="stylus" module>
+  .authorsList
+    z-index 1
+
   .selectedAuthorsList
     margin-top x(10)
     margin-bottom x(10)

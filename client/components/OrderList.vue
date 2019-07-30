@@ -4,7 +4,7 @@
       <table :class="$style.table">
         <tbody>
           <tr 
-            v-for="book in order"
+            v-for="book in cart"
             :key="book.book_id"
           >
             <td :class="$style.bookTitle">
@@ -14,15 +14,15 @@
 
             <td :class="$style.priceRow">
               <span :class="$style.count">
-                {{ book.count }} шт.
+                {{ book.order_qty }} шт.
               </span>
               ×
               <span>
-                {{ book.price || 12 }} руб.
+                {{ book.price }} руб.
               </span>
               =
               <span :class="$style.bookTotal">
-                {{ getTotal(book.count, book.price || 12) }} руб.
+                {{ getBookTotal(book.order_qty, book.price) }} руб.
               </span>
             </td>
           </tr>
@@ -33,7 +33,7 @@
 
       <div :class="$style.total">
         <h3>Итого:</h3>
-        <span>123 руб.</span>
+        <span>{{ getTotal() }} руб.</span>
       </div>
     </template>
   </div>
@@ -42,23 +42,22 @@
 <script>
   export default {
     name: 'order-list',
-    props: {
-      order: {
-        type: Array,
-        required: true,
-      },
-    },
     computed: {
+      cart() {
+        return this.$store.state.cart;
+      },
       isOrder() {
-        return Object.values(this.order).length > 0;
+        return this.cart.length > 0;
       },
     },
     methods: {
-      getPrice(book) {
-        return 'temp';
-      },
-      getTotal(count, price) {
+      getBookTotal(count, price) {
         return count * price;
+      },
+      getTotal() {
+        return this.cart.reduce((total, book, i) => {
+          return total + book.price * book.order_qty;
+        }, 0);
       },
     },
   };

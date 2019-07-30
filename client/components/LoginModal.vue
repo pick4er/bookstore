@@ -51,9 +51,6 @@
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
 
-  import { ADMIN_MODE } from 'helpers/constants';
-  import api from 'api';
-
   export default {
     name: 'login-modal',
     components: {
@@ -67,11 +64,6 @@
         type: Boolean,
         required: true,
         default: false,
-      },
-      auth: {
-        type: Function,
-        required: false,
-        default: () => {},
       },
     },
     data() {
@@ -97,47 +89,13 @@
       },
     },
     methods: {
-      async onAuth() {
-        let isError = false;
-        const response = await api('login', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            email: this.email,
-            password: this.password,
-          },
-        }).catch(e => {
-          console.error(e);
-          isError = true
+      onAuth() {
+        this.$store.dispatch({
+          type: 'LOGIN',
+          email: this.email,
+          password: this.password,
+          onError: this.showError,
         });
-        if (isError) return;
-
-        if (response.status === 'ok') {
-          this.$store.commit({
-            type: 'UPDATE_USER',
-            user: response.user,
-          });
-          this.$store.commit({
-            type: 'UPDATE_IS_AUTHED', 
-            isAuthed: true,
-          });
-
-          if (response.user.login === 'pick4er') {
-            this.$store.commit({
-              type: 'UPDATE_USER_MODE', 
-              userMode: ADMIN_MODE,
-            });
-          }
-
-          this.close();
-
-          return this.auth();
-        }
-
-        this.showError(response.message);
       },
       close() {
         this.$store.commit({

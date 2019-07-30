@@ -11,10 +11,6 @@
   import LoginModal from 'client/components/LoginModal';
   import RegisterModal from 'client/components/RegisterModal';
 
-  import { ADMIN_MODE } from 'helpers/constants';
-
-  import api from 'api';
-
   export default {
     name: 'App',
     components: {
@@ -22,9 +18,10 @@
       'login-modal': LoginModal,
       'register-modal': RegisterModal,
     },
-    async beforeMount() {
-      await this.isAuthenticated()
-        .catch(console.error);
+    beforeMount() {
+      this.$store.dispatch({
+        type: 'CHECK_IF_AUTHED',
+      });
     },
     computed: {
       isLoginModalOpened() {
@@ -33,52 +30,6 @@
       isRegisterModalOpened() {
         return Boolean(this.$store.state.isRegisterModalOpened);
       }
-    },
-    methods: {
-      async isAuthenticated() {
-        const { 
-          state: { isAuthed = false } = {},
-        } = this.$store;
-
-        if (isAuthed) return Promise.resolve(true);
-
-        let isError = false;
-        const response = await api('is_authenticated', {
-          credentials: 'include',
-        }).catch(e => {
-          console.error(e);
-          isError = true;
-        });
-        if (isError) return;
-
-        if (response.status === 'ok') {
-          const { user } = response;
-
-          this.$store.commit({
-            type: 'UPDATE_IS_AUTHED',
-            isAuthed: true,
-          });
-          this.$store.commit({
-            type: 'UPDATE_USER',
-            user,
-          });
-
-          if (user.login === 'pick4er') {
-            this.$store.commit({
-              type: 'UPDATE_USER_MODE', 
-              userMode: ADMIN_MODE,
-            });
-          }
-
-          return Promise.resolve(true);
-        }
-
-        this.$store.commit({
-          type: 'UPDATE_IS_AUTHED',
-          isAuthed: false,
-        });
-        return Promise.reject(false);
-      },
     },
   }
 </script>

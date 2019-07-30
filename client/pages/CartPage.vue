@@ -1,6 +1,6 @@
 <template>
   <div>
-    <order-list :order="order" />
+    <order-list />
     <order-form :class="$style.form" />
   </div>
 </template>
@@ -14,11 +14,6 @@
     components: {
       'order-form': OrderForm,
       'order-list': OrderList,
-    },
-    computed: {
-      order() {
-        return Object.values(this.$store.state.order);
-      },
     },
   }
 </script>

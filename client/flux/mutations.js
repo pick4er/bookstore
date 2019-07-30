@@ -45,4 +45,10 @@ export default {
   UPDATE_USER(state, { user }) {
     Vue.set(state, 'user', user);
   },
+  UPDATE_CART(state, { cart }) {
+    Vue.set(state, 'cart', cart);
+  },
+  CLEAR_CART(state) {
+    Vue.set(state, 'cart', {});
+  },
 };
