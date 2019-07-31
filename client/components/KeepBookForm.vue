@@ -65,11 +65,12 @@
   import BaseDropdown from 'client/elements/BaseDropdown';
   import BaseFormLayout from 'client/layouts/BaseFormLayout';
 
+  import formMessages from 'client/mixins/formMessages';
   import isNumber from 'helpers/isNumber';
-  import api from 'api';
 
   export default {
     name: 'keep-book-form',
+    mixins: [formMessages],
     components: {
       'base-input': BaseInput,
       'base-button': BaseButton,
@@ -80,10 +81,6 @@
       return {
         qty: '',
         selectedBook: {},
-        error: '',
-        success: '',
-        errorTimerId: '',
-        successTimerId: '',
         inputModes: [
           'white', 
           'textLeft',
@@ -103,80 +100,38 @@
         );
       },
     },
-    beforeDestroy() {
-      this.errorTimerId && clearTimeout(this.errorTimerId);
-      this.successTimerId && clearTimeout(this.successTimerId);
-    },
     methods: {
       validateFormAndIsValid() {
         let isValid = true;
         if (!isNumber(this.qty)) {
-          this.handleError('Количество не должно равняться нулю');
+          this.showError('Количество не должно равняться нулю');
           isValid = false;
         } else if (!this.selectedBook.book_id) {
-          this.handleError('Выберите книгу');
+          this.showError('Выберите книгу');
           isValid = false;
         }
 
         return isValid;
       },
-      async handleSubmit() {
+      handleSubmit() {
         if (!this.validateFormAndIsValid()) return;
 
-        let isError = false;
-        const result = await api('keep_book', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            book_id: this.selectedBook.book_id,
-            qty: this.qty,
-          },
-        }).catch(e => {
-          isError = true;
-          console.error(e);
-          this.handleError(e.message);
-        });
-        if (isError) return;
-
-        if (result.status === 'error') {
-          this.handleError(result.message);
-          return;
-        }
-
-        this.handleSuccess(result.message);
-        this.resetForm();
         this.$store.dispatch({
-          type: 'FETCH_BOOKS',
+          type: 'KEEP_BOOK',
+          book_id: this.selectedBook.book_id,
+          qty: this.qty,
+          onError: this.showError,
+          onSuccess: msg => {
+            this.showSuccess(msg);
+            this.resetForm();
+          },
         });
-      },
-      handleError(errorText) {
-        this.clearSuccess();
-        this.error = errorText;
-        this.errorTimerId = setTimeout(() => {
-          this.error = '';
-        }, 6666);
-      },
-      handleSuccess(successText) {
-        this.clearError();
-        this.success = successText;
-        this.successTimerId = setTimeout(() => {
-          this.success = '';
-        }, 6666);
-      },
-      clearError() {
-        this.error = '';
-        clearTimeout(this.errorTimerId);
-      },
-      clearSuccess() {
-        this.success = '';
-        clearTimeout(this.successTimerId);
       },
       resetForm() {
         this.qty = '';
         this.selectedBook = {};
+        this.error = '';
+        this.success = '';
       },
       onSelectedBookSelect() {
         this.selectedBook = {};

@@ -41,8 +41,8 @@
     flexStretch()
 
     .block
-      max-width x(375)
       width 100%
+      max-width x(375)
       
   .row + .row
     margin-top x(30)

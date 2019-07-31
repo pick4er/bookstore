@@ -21,9 +21,7 @@
           <span :class="[
             $style.selection,
             $style.selectionMessage
-          ]">
-            {{ selectionMessage }}
-          </span>
+          ]">{{ selectionMessage }}</span>
         </template>
         <span :class="$style.triangle">
           {{ triangle }}

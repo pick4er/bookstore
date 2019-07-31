@@ -84,10 +84,11 @@
   import BaseInput from 'client/elements/BaseInput';
   import BaseDropdown from 'client/elements/BaseDropdown';
 
-  import api from 'api';
+  import formMessages from 'client/mixins/formMessages';
 
   export default {
     name: 'update-author-form',
+    mixins: [formMessages],
     components: {
       'base-input': BaseInput,
       'base-button': BaseButton,
@@ -100,10 +101,6 @@
         surname: '',
         middleName: '',
         selectedAuthor: {},
-        error: '',
-        success: '',
-        errorTimerId: '',
-        successTimerId: '',
         inputModes: [
           'white', 
           'textLeft',
@@ -138,18 +135,14 @@
         this.middleName = nextAuthor.middle_name || '';
       },
     },
-    beforeDestroy() {
-      this.errorTimerId && clearTimeout(this.errorTimerId);
-      this.successTimerId && clearTimeout(this.successTimerId);
-    },
     methods: {
       validateFormAndIsValid() {
         let isValid = true;
         if (!this.selectedAuthor.author_id) {
-          this.handleError('Выберите автора');
+          this.showError('Выберите автора');
           isValid = false;
         } else if (!this.name) {
-          this.handleError('Введите имя');
+          this.showError('Введите имя');
           isValid = false;
         }
 
@@ -158,67 +151,26 @@
       async handleSubmit() {
         if (!this.validateFormAndIsValid()) return;
 
-        let isError = false;
-        await api('update_author', {
-          method: 'PATCH',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
+        this.$store.dispatch({
+          type: 'UPDATE_AUTHOR',
+          author: {
             author_id: this.selectedAuthor.author_id,
-            first_name: this.name,
-            last_name: this.surname,
-            middle_name: this.middleName,
+            ...this.$data
           },
-        }).catch(e => {
-          isError = true;
-          console.error(e);
-          this.handleError(e.message);
+          onError: this.showError,
+          onSuccess: msg => {
+            this.showSuccess(msg);
+            this.resetForm();
+          },
         });
-        if (isError) return;
-
-        if (result.status === 'error') {
-          this.handleError(result.message);
-          return;
-        }
-
-        this.handleSuccess(result.message);
-        this.resetForm();
-        this.$store.dispatch({
-          type: 'FETCH_AUTHORS',
-        });
-        this.$store.dispatch({
-          type: 'FETCH_BOOKS',
-        });
-      },
-      handleError(errorText) {
-        this.clearSuccess();
-        this.error = errorText;
-        this.errorTimerId = setTimeout(() => {
-          this.error = '';
-        }, 6666);
-      },
-      handleSuccess(successText) {
-        this.clearError();
-        this.success = successText;
-        this.successTimerId = setTimeout(() => {
-          this.success = '';
-        }, 6666);
-      },
-      clearError() {
-        this.error = '';
-        clearTimeout(this.errorTimerId);
-      },
-      clearSuccess() {
-        this.success = '';
-        clearTimeout(this.successTimerId);
       },
       resetForm() {
         this.name = '';
         this.surname = '';
         this.middleName = '';
         this.selectedAuthor = {};
+        this.error = '';
+        this.success = '';
       },
       onAuthorsOpen() {
         if ((this.loadedAuthors || []).length !== 0) return;

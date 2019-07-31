@@ -55,14 +55,6 @@
         placeholder="Ростов-на-Дону, до востребования"
       />
 
-      <span v-if="billingError" :class="$style.error">
-        {{ billingError }}
-      </span>
-
-      <span v-else-if="commonError" :class="$style.error">
-        {{ commonError }}
-      </span>
-
       <base-button 
         type="submit" 
         :class="$style.lastBlock"
@@ -103,12 +95,12 @@
         :class="$style.input"
       />
 
-      <span v-if="successMessage" :class="$style.success">
-        {{ successMessage }}
+      <span v-if="success" :class="$style.success">
+        {{ success }}
       </span>
 
-      <span v-if="profileError" :class="$style.error">
-        {{ profileError }}
+      <span v-else-if="error" :class="$style.error">
+        {{ error }}
       </span>
     </div>
   </form>
@@ -118,10 +110,11 @@
   import BaseInput from 'client/elements/BaseInput';
   import BaseButton from 'client/elements/BaseButton';
 
-  import api from 'api';
+  import formMessages from 'client/mixins/formMessages';
 
   export default {
     name: 'user-form',
+    mixins: [formMessages],
     components: {
       'base-input': BaseInput,
       'base-button': BaseButton,
@@ -139,34 +132,17 @@
         phone: '',
         shippingAddress: '',
 
-        successMessage: '',
-        profileError: '',
-        billingError: '',
-        commonError: '',
-
-        errorTimerId: null,
-        successTimerId: null,
         inputModes: [
           'white',
           'textLeft',
         ],
       }
     },
-    beforeDestroy() {
-      this.clearErrors();
-      this.clearSuccess();
-    },
     beforeMount() {
       this.$store.state.user &&
-      this.retrieveUserFields(this.$store.getters.sanitizedUser);
-    },
-    computed: {
-      userId() {
-        return (this.$store.state.user || {}).user_id;
-      },
-      billingId() {
-        return (this.$store.state.user || {}).billing_id;
-      },
+      this.retrieveUserFields(
+        this.$store.getters.sanitizedUser
+      );
     },
     watch: {
       '$store.state.user'(user) {
@@ -183,70 +159,13 @@
           }
         });
       },
-      async handleSubmit() {
-        const response = await api('user', {
-          method: 'PATCH',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            user_id: this.userId,
-            billing_id: this.billingId,
-            email: this.email,
-            login: this.login,
-            password: this.password,
-            first_name: this.name,
-            last_name: this.surname,
-            middle_name: this.middleName,
-            phone: this.phone,
-            shipping_address: this.shippingAddress,
-          },
-        }).catch(console.error);
-
-        if (response.status === 'ok') {
-          this.$store.commit({
-            type: 'UPDATE_USER',
-            user: response.user,
-          });
-          this.showSuccess();
-
-          return;
-        }
-
-        this.showError(response);
-      },
-      showSuccess() {
-        this.clearErrors();
-        this.successMessage = 'Обновлено!';
-        this.successTimerId = setTimeout(() => {
-          this.successMessage = null;
-        }, 6666);
-      },
-      showError(response) {
-        this.clearSuccess();
-        if (response.status === 'profile_error') {
-          this.profileError = response.message
-        } else if (response.stats === 'billing_error') {
-          this.billingError = response.message
-        } else {
-          this.commonError = response.message
-        }
-
-        this.errorTimerId = setTimeout(() => {
-          this.profileError = null;
-          this.billingError = null;
-          this.commonError = null;
-        }, 6666);
-      },
-      clearErrors() {
-        clearTimeout(this.errorTimerId);
-        this.billingError = null;
-        this.profileError = null;
-      },
-      clearSuccess() {
-        clearTimeout(this.successTimerId);
-        this.successMessage = null;
+      handleSubmit() {
+        this.$store.dispatch({
+          type: 'CHANGE_USER',
+          user: this.$data,
+          onError: this.showError,
+          onSuccess: this.showSuccess,
+        });
       },
     },
   }

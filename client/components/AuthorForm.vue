@@ -34,15 +34,22 @@
         :modes="inputModes"
         :class="$style.formInput"
       />
-
     </template>
+
+    <template #messages>
+      <div v-if="error" :class="$style.error">
+        {{ error }}
+      </div>
+      <div v-else-if="success" :class="$style.success">
+        {{ success }}
+      </div>
+    </template>
+
     <template #submitButton>
       <base-button 
         type="submit"
         :class="$style.formInput"
-      >
-        Добавить автора
-      </base-button>
+      >Добавить автора</base-button>
     </template>
   </base-form-layout>
 </template>
@@ -52,10 +59,11 @@
   import BaseInput from 'client/elements/BaseInput';
   import BaseButton from 'client/elements/BaseButton';
 
-  import api from 'api';
+  import formMessages from 'client/mixins/formMessages';
 
   export default {
     name: 'author-form',
+    mixins: [formMessages],
     components: {
       'base-input': BaseInput,
       'base-button': BaseButton,
@@ -74,24 +82,22 @@
     },
     methods: {
       async handleSubmit() {
-        await api('add_author', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
+        this.$store.dispatch({
+          type: 'ADD_AUTHOR',
+          author: this.$data,
+          onError: this.showError,
+          onSuccess: msg => {
+            this.showSuccess(msg);
+            this.resetForm();
           },
-          body: {
-            last_name: this.surname,
-            first_name: this.name,
-            middle_name: this.middleName,
-          },
-        }).catch(console.error);
-        this.resetForm();
+        });
       },
       resetForm() {
         this.name = '';
         this.surname = '';
         this.middleName = '';
+        this.error = '';
+        this.sucess = '';
       },
     },
   }
@@ -100,4 +106,10 @@
 <style lang="stylus" module>
   .formInput + .formInput
     margin-top x(30)
+
+  .error
+    errorText()
+    
+  .success
+    successText()
 </style>

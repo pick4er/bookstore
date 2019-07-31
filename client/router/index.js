@@ -8,20 +8,20 @@ import { ADMIN_MODE } from 'helpers/constants';
 Vue.use(Router);
 
 const CatalogPage = () => import(
-  /* webpackChunkName: "CatalogPage" */ 
-  'client/pages/CatalogPage'
+  /* webpackChunkName: "CatalogPage" */
+  'client/pages/CatalogPage',
 );
 const AdminPage = () => import(
-  /* webpackChunkName: "AdminPage" */ 
-  'client/pages/AdminPage'
+  /* webpackChunkName: "AdminPage" */
+  'client/pages/AdminPage',
 );
 const CartPage = () => import(
-  /* webpackChunkName: "CartPage" */ 
-  'client/pages/CartPage'
+  /* webpackChunkName: "CartPage" */
+  'client/pages/CartPage',
 );
 const UserPage = () => import(
-  /* webpackChunkName: "UserPage" */ 
-  'client/pages/UserPage'
+  /* webpackChunkName: "UserPage" */
+  'client/pages/UserPage',
 );
 
 export default function createRouter() {
@@ -36,21 +36,21 @@ export default function createRouter() {
       return {
         x: 0,
         y: 0,
-      }
+      };
     },
     routes: [
-      { 
-        path: '/admin', 
-        component: isAuthorized(AdminPage), 
+      {
+        path: '/admin',
+        component: isAuthorized(AdminPage),
         props: true,
         meta: {
           authMode: ADMIN_MODE,
         },
       },
-      { 
-        path: '/cart', 
-        component: isAuthorized(CartPage), 
-        props: true, 
+      {
+        path: '/cart',
+        component: isAuthorized(CartPage),
+        props: true,
         meta: {
           isAuth: true,
         },
@@ -63,10 +63,10 @@ export default function createRouter() {
           isAuth: true,
         },
       },
-      { 
-        path: '*', 
-        component: CatalogPage, 
-        props: true, 
+      {
+        path: '*',
+        component: CatalogPage,
+        props: true,
       },
     ],
   });

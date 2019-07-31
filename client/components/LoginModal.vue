@@ -5,60 +5,64 @@
     :isOpened="isOpened"
     :close="close"
   >
-    <form 
-      @submit.prevent="onAuth"
-      :class="$style.form"
-    >
-      <base-input 
-        required
-        v-model="email"
-        name="email"
-        id="email"
-        labelText="Email"
-        placeholder="pick4er@gmail.com"
-        :modes="inputModes"
-        :class="$style.input"
-      />
+    <base-form-layout :onSubmit="onAuth">
+      <template #inputs>
+        <base-input 
+          required
+          v-model="email"
+          name="email"
+          id="email"
+          labelText="Email"
+          placeholder="pick4er@gmail.com"
+          :modes="inputModes"
+          :class="$style.input"
+        />
 
-      <base-input 
-        required
-        v-model="password"
-        name="password"
-        id="password"
-        type="password"
-        labelText="Пароль"
-        placeholder="•••••••••••••"
-        :modes="inputModes"
-        :class="$style.input"
-      />
+        <base-input 
+          required
+          v-model="password"
+          name="password"
+          id="password"
+          type="password"
+          labelText="Пароль"
+          placeholder="•••••••••••••"
+          :modes="inputModes"
+          :class="$style.input"
+        />
 
-      <span v-if="error" :class="$style.error">
-        {{ error }}
-      </span>
+        <span v-if="error" :class="$style.error">
+          {{ error }}
+        </span>
+      </template>
 
-      <div :class="$style.lastBlock">
+      <template #submitButton>
         <base-button type="submit">
           Войти
         </base-button>
-      </div>
-    </form>
+      </template>
+    </base-form-layout>
   </base-modal>
 </template>
 
 <script>
+  import BaseFormLayout from 'client/layouts/BaseFormLayout';
   import BaseModal from 'client/elements/BaseModal';
   import BasePortal from 'client/elements/BasePortal';
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
 
+  import formMessages from 'client/mixins/formMessages';
+
   export default {
     name: 'login-modal',
     components: {
+      'base-form-layout': BaseFormLayout,
       'base-modal': BaseModal,
       'base-portal': BasePortal,
       'base-button': BaseButton,
       'base-input': BaseInput,
     },
+    mixins: [formMessages],
     props: {
       isOpened: {
         type: Boolean,
@@ -70,16 +74,11 @@
       return {
         email: '',
         password: '',
-        error: '',
-        timerId: null,
         inputModes: [
           'white',
           'textLeft',
         ],
       }
-    },
-    beforeDestroy() {
-      clearTimeout(this.timerId);
     },
     watch: {
       isOpened(nextIsOpened, isOpened) {
@@ -102,12 +101,6 @@
           type: 'CLOSE_LOGIN_MODAL',
         });
       },
-      showError(errorMessage) {
-        this.error = errorMessage;
-        this.timerId = setTimeout(() => {
-          this.error = null;
-        }, 6666);
-      },
       resetForm() {
         this.email = '';
         this.password = '';
@@ -119,14 +112,11 @@
 
 <style lang="stylus" module>
   .modal
+    display flex
     width 100%
     max-width x(424)
     height 100%
     max-height x(288)
-
-  .form
-    flexColumn()
-    height 100%
 
   .input
     width 100%
@@ -134,11 +124,6 @@
   
   .error
     errorText()
-
-  .lastBlock
-    flex-grow 1
-    display flex
-    align-items flex-end
 
   .input + .input
     margin-top x(18)

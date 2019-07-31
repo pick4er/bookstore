@@ -4,9 +4,7 @@
     :type="type" 
     :class="$style.button"
     @click="$emit('click', $event)"
-  >
-    <slot>Button</slot>
-  </button>
+  ><slot>Кнопка</slot></button>
 </template>
 
 <script>

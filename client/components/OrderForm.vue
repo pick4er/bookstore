@@ -1,7 +1,10 @@
 <template>
-  <div :class="$style.wrap">
-    <h4>Оформить заказ</h4>
-    <form @submit.prevent="handleSubmit">
+  <base-form-layout :onSubmit="handleSubmit">
+    <template #header>
+      <h4>Оформить заказ</h4>
+    </template>
+
+    <template #inputs>
       <base-input 
         :required="true"
         v-model="phone" 
@@ -32,22 +35,26 @@
         :modes="inputModes"
         :class="$style.formInput"
       />
+    </template>
 
+    <template #submitButton>
       <base-button 
         type="submit"
         :class="$style.formInput"
       >Заказать</base-button>
-    </form>
-  </div>
+    </template>
+  </base-form-layout>
 </template>
 
 <script>
+  import BaseFormLayout from 'client/layouts/BaseFormLayout';
   import BaseInput from 'client/elements/BaseInput';
   import BaseButton from 'client/elements/BaseButton';
 
   export default {
     name: 'order-form',
     components: {
+      'base-form-layout': BaseFormLayout,
       'base-input': BaseInput,
       'base-button': BaseButton,
     },
@@ -63,15 +70,10 @@
       };
     },
     methods: {
-      async handleSubmit() {
-        const self = this;
-
-        await new Promise(res => {
-          setTimeout(() => {
-            console.log('ordered!');
-            self.resetForm();
-            res();
-          }, 1000);
+      handleSubmit() {
+        this.$store.dispatch({
+          type: 'CREATE_ORDER',
+          onSuccess: this.resetForm,
         });
       },
       resetForm() {
@@ -84,9 +86,6 @@
 </script>
 
 <style lang="stylus" module>
-  .wrap
-    flexColumn()
-
   .formInput + .formInput
     margin-top x(30)
 </style>

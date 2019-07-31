@@ -1,6 +1,4 @@
 <script>
-  import api from 'api';
-
   export default {
     name: 'base-link',
     props: {

@@ -54,6 +54,16 @@
       </div>
     </template>
 
+    <template #messages>
+      <div v-if="error" :class="$style.error">
+        {{ error }}
+      </div>
+
+      <div v-else-if="success" :class="$style.success">
+        {{ success }}
+      </div>
+    </template>
+
     <template #submitButton>
       <base-button 
         type="submit"
@@ -69,10 +79,11 @@
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
 
-  import api from 'api';
+  import formMessages from 'client/mixins/formMessages';
 
   export default {
     name: 'book-form',
+    mixins: [formMessages],
     components: {
       'base-input': BaseInput,
       'base-button': BaseButton,
@@ -108,25 +119,25 @@
       },
     },
     methods: {
-      async handleSubmit() {
-        await api('add_book', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            title: this.bookTitle,
-            price: this.price,
-            authors: this.selectedAuthors.map(v => v.author_id),
-          },
-        }).catch(console.error);
-        this.resetForm();
+      handleSubmit() {
+        this.$store.dispatch({
+          type: 'ADD_BOOK',
+          title: this.bookTitle,
+          price: this.price,
+          authors: this.selectedAuthors.map(v => v.author_id),
+          onError: this.showError,
+          onSuccess: msg => {
+            this.showSuccess(msg);
+            this.resetForm();
+          }
+        });
       },
       resetForm() {
         this.bookTitle = '';
         this.price = '';
         this.selectedAuthors = [];
+        this.error = '';
+        this.success = '';
       },
       onOpen() {
         if ((this.loadedAuthors || []).length !== 0) return;
@@ -182,4 +193,10 @@
 
   .formInput + .formInput
     margin-top x(30)
+    
+  .error
+    errorText()
+    
+  .success
+    successText()
 </style>

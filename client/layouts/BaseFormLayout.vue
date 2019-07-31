@@ -37,6 +37,7 @@
 <style lang="stylus" module>
   .wrap
     flexColumn()
+    width 100%
 
     form
       flex-grow 1
