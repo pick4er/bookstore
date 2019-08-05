@@ -12,6 +12,7 @@ export default function createStore(initialState = {}) {
     state: () => ({
       isMobile: false,
       books: [],
+      book: {},
       authors: [],
       cart: [],
       error: null,

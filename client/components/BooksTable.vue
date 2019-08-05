@@ -23,7 +23,12 @@
           :title="book.title"
           :class="$style.title"
           scope="row" 
-        >{{ book.title }}</td>
+        >
+          <base-link
+            :isRouter="true"
+            :to="`/book/${book.book_id}`"
+          >{{ book.title }}</base-link>
+        </td>
 
         <td 
           :title="book.authors"
@@ -50,12 +55,14 @@
 </template>
 
 <script>
-  import BaseInput from 'client/elements/BaseInput'
-  import BaseButton from 'client/elements/BaseButton'
+  import BaseLink from 'client/elements/BaseLink';
+  import BaseInput from 'client/elements/BaseInput';
+  import BaseButton from 'client/elements/BaseButton';
 
   export default {
     name: 'books-table',
     components: {
+      'base-link': BaseLink,
       'base-input': BaseInput,
       'base-button': BaseButton,
     },
@@ -146,6 +153,7 @@
 
       .title
         width 40%
+        text-decoration underline
 
       .authors
         width 30%

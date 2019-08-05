@@ -10,7 +10,8 @@ async function API(context = {}, data = {}) {
     headers,
     body,
     onError,
-    onSuccess
+    onSuccess,
+    ...rest
   } = data;
 
   let isError = false;
@@ -24,6 +25,7 @@ async function API(context = {}, data = {}) {
     body: {
       ...body,
     },
+    ...rest
   }).catch(error => {
     isError = true;
     console.error(error);
@@ -290,6 +292,23 @@ export default {
     commit({
       type: 'UPDATE_USER_MODE', 
       userMode: ADMIN_MODE,
+    });
+  },
+
+  async FETCH_BOOK(context, { bookId }) {
+    const { commit } = context;
+
+    const { isError, response } = await API(context, {
+      method: 'GET',
+      url: `book/?book_id=${bookId}`,
+      isAuth: false,
+      json: true,
+    });
+    if (isError) return;
+
+    commit({
+      type: 'UPDATE_BOOK',
+      book: response.book,
     });
   },
 

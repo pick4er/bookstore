@@ -23,6 +23,10 @@ const UserPage = () => import(
   /* webpackChunkName: "UserPage" */
   'client/pages/UserPage'
 );
+const BookPage = () => import(
+  /* webpackChunkName: "BookPage" */
+  'client/pages/BookPage'
+);
 
 export default function createRouter() {
   return new Router({
@@ -62,6 +66,11 @@ export default function createRouter() {
         meta: {
           isAuth: true,
         },
+      },
+      {
+        path: '/book/:bookId',
+        component: BookPage,
+        props: true,
       },
       {
         path: '*',

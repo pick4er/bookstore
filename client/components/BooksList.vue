@@ -11,7 +11,12 @@
     >
       <div>
         <h4>Название</h4>
-        <span>{{ book.title }}</span>
+        <span :class="$style.title">
+          <base-link
+            :isRouter="true"
+            :to="`/book/${book.book_id}`"
+          >{{ book.title }}</base-link>
+        </span>
       </div>
 
       <div>
@@ -40,12 +45,14 @@
 </template>
 
 <script>
+  import BaseLink from 'client/elements/BaseLink';
   import BaseInput from 'client/elements/BaseInput'
   import BaseButton from 'client/elements/BaseButton'
 
   export default {
     name: 'books-table',
     components: {
+      'base-link': BaseLink,
       'base-input': BaseInput,
       'base-button': BaseButton,
     },
@@ -111,6 +118,9 @@
 
       span
         textFont()
+
+      .title
+        text-decoration underline
 
   .input
     width x(104)
