@@ -1,7 +1,9 @@
 <template>
   <base-form-layout :onSubmit="handleSubmit">
     <template #header>
-      <h4>Добавить книгу</h4>
+      <h4 
+        :class="$style.header"
+      >Добавить книгу</h4>
     </template>
 
     <template #inputs>
@@ -35,6 +37,7 @@
         selectionKey="author_id"
         :onOpen="onOpen"
         :onSelect="onAuthorSelect"
+        :direction="isMobile ? 'bottom' : 'right'"
       />
 
       <div :class="$style.selectedAuthorsList">
@@ -67,7 +70,7 @@
     <template #submitButton>
       <base-button 
         type="submit"
-        :class="$style.formInput" 
+        :class="$style.formInput"
       >Добавить книгу</base-button>
     </template>
   </base-form-layout>
@@ -95,8 +98,9 @@
         bookTitle: '',
         price: '',
         selectedAuthors: [],
+
         inputModes: [
-          'white', 
+          'white',
           'textLeft',
         ],
       }
@@ -116,6 +120,9 @@
       },
       loadedAuthors() {
         return this.$store.state.authors || [];
+      },
+      isMobile() {
+        return this.$store.state.isMobile;
       },
     },
     methods: {
@@ -163,6 +170,23 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .formInput + .formInput
+      margin-top x(20)
+
+    .selectedAuthorsList
+      min-height 0
+
+      ul
+        font-size x(14)
+
+        li
+          line-height x(16)
+
+    .header
+      margin-top x(0)
+      margin-bottom x(20)
+
   .authorsList
     z-index 1
 

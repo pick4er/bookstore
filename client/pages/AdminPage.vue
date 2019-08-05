@@ -37,6 +37,16 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .row
+      flex-flow column nowrap
+
+      .block
+        max-width none
+
+    .row + .row
+      margin-top x(0)
+
   .row
     flexStretch()
 

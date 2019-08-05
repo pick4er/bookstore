@@ -18,6 +18,10 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .header
+      font-size x(36)
+
   .header
     font-family $robotoLight
     font-weight bold

@@ -10,8 +10,7 @@ async function API(context = {}, data = {}) {
     headers,
     body,
     onError,
-    onSuccess,
-    ...restParams
+    onSuccess
   } = data;
 
   let isError = false;
@@ -25,7 +24,6 @@ async function API(context = {}, data = {}) {
     body: {
       ...body,
     },
-    ...restParams,
   }).catch(error => {
     isError = true;
     console.error(error);

@@ -60,6 +60,10 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .modal
+      padding x(18)
+
   .background
     flexCenter()
     outline none

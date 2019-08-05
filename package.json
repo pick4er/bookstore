@@ -56,6 +56,7 @@
     "hogan.js": "^3.0.2",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
+    "koa-useragent": "^2.0.0",
     "mime": "^2.4.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",

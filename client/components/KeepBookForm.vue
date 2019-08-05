@@ -1,7 +1,7 @@
 <template>
   <base-form-layout :onSubmit="handleSubmit">
     <template #header>
-      <h4>Оформить приход книги</h4>
+      <h4 :class="$style.header">Оформить приход книги</h4>
     </template>
 
     <template #inputs>
@@ -17,6 +17,7 @@
         :values="unselectedBooks"
         :onOpen="onBooksOpen"
         :onSelect="onBookSelect"
+        :direction="isMobile ? 'bottom' : 'right'"
       />
 
       <div 
@@ -99,6 +100,9 @@
           ),
         );
       },
+      isMobile() {
+        return this.$store.state.isMobile;
+      }
     },
     methods: {
       validateFormAndIsValid() {
@@ -153,6 +157,24 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .header
+      margin-top x(20)
+      margin-bottom x(20)
+
+    .formInput + .formInput
+      margin-top x(20)
+
+    .submitButton
+      margin-top x(20)
+
+    .booksList
+      max-width none
+      z-index 1
+
+    .selectedBook
+      font-size x(14)
+
   .booksList
     max-width x(375)
     width 100%

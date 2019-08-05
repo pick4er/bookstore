@@ -40,4 +40,7 @@ export default {
   CLEAR_CART(state) {
     Vue.set(state, 'cart', {});
   },
+  UPDATE_IS_MOBILE(state, { isMobile }) {
+    Vue.set(state, 'isMobile', isMobile);
+  },
 };

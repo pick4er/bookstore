@@ -7,9 +7,10 @@ import mutations from 'client/flux/mutations';
 
 Vue.use(Vuex);
 
-export default function createStore() {
+export default function createStore(initialState = {}) {
   return new Vuex.Store({
     state: () => ({
+      isMobile: false,
       books: [],
       authors: [],
       cart: [],
@@ -19,6 +20,7 @@ export default function createStore() {
       isAuthed: null,
       isLoginModalOpened: null,
       isRegisterModalOpened: null,
+      ...initialState
     }),
     actions,
     getters,

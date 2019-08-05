@@ -40,6 +40,24 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    limitWidth()
+      width 100%
+      max-width x(600)
+      margin-left auto
+      margin-right auto
+      padding-left x(10)
+      padding-right x(10)
+
+    .header
+      padding-top x(20)
+      padding-bottom x(20)
+
+    .header
+    .navLinks
+    .main
+      limitWidth()
+
   limitWidth()
     width 100%
     max-width x(1000)

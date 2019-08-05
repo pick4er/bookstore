@@ -144,6 +144,11 @@
         this.$store.getters.sanitizedUser
       );
     },
+    computed: {
+      isMobile() {
+        return this.$store.state.isMobile;
+      },
+    },
     watch: {
       '$store.state.user'(user) {
         user && this.retrieveUserFields(
@@ -172,6 +177,26 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .form
+      flex-flow column-reverse
+
+      div + div
+        margin-left x(0)
+        margin-bottom x(40)
+
+      div
+        max-width none
+
+        h4
+          margin-bottom x(18)
+
+    .input + .input
+      margin-top x(12)
+      
+    .lastBlock
+      margin-top x(28)
+
   .form
     display flex
     flex-flow row nowrap

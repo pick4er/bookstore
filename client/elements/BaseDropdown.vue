@@ -1,5 +1,5 @@
 <template>
-  <span :class="$style.wrap">
+  <span :class="$style.dropdown">
     <template v-if="Boolean(labelText)">
       <div :class="labelClasses">
         {{ labelText }}
@@ -265,10 +265,33 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    $itemHeight = x(27)
+    $itemCount = 6
+
+    .dropdown
+      .label
+        font-size x(14)
+        margin-bottom x(5)
+
+      .selectionButton
+        height x(25)
+        font-size x(12)
+        
+        .selection
+          line-height x(20)
+
+        .triangle
+          line-height x(18)
+
+      .list
+        font-size x(14)
+        height $itemHeight * $itemCount + x(2)
+
   $itemHeight = x(32)
   $itemCount = 5
 
-  .wrap
+  .dropdown
     display block
 
   .label
@@ -312,14 +335,12 @@
       margin-right x(5)
 
   .list
+    clearList()
     position absolute
     border x(1) solid $border
     width x(214)
     height $itemHeight * $itemCount + x(2)
     background-color $white
-    list-style none
-    padding x(0)
-    margin x(0)
     font-size x(16)
     font-family $robotoLight
     overflow auto

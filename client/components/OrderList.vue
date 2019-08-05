@@ -66,6 +66,9 @@
       isOrder() {
         return this.cart.length > 0;
       },
+      isMobile() {
+        return this.$store.state.isMobile;
+      }
     },
     methods: {
       getBookTotal(count, price) {
@@ -94,6 +97,36 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .table
+      tr
+        &:nth-child(even)
+          background-color $hover
+
+        &:hover
+          background-color auto
+
+    .bookTitle
+      h5
+        font-size x(16)
+
+      h6
+        font-size x(12)
+
+    .priceRow
+      font-size x(14)
+
+      .bookTotal
+        font-size x(16)
+
+    .total
+      h3
+        font-size x(32)
+
+      span
+        font-size x(28)
+
+
   .table
     width 100%
     

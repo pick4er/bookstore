@@ -111,6 +111,15 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .modal
+      max-height x(200)
+      margin-left x(10)
+      margin-right x(10)
+
+    .input + .input
+      margin-top x(14)
+
   .modal
     display flex
     width 100%

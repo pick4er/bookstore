@@ -12,6 +12,7 @@ const renderer = createBundleRenderer(ssrBundle, {
   clientManifest,
   template: (html, context) => markup.render({
     html,
+    layout: context.layout,
     state: context.renderState({
       windowKey: '__INITIAL_STATE__',
     }),
@@ -22,8 +23,12 @@ const renderer = createBundleRenderer(ssrBundle, {
 });
 
 async function prerender(ctx) {
+  const { isMobile = false } = ctx.userAgent;
+
   const context = {
     url: ctx.url,
+    isMobile: isMobile,
+    layout: isMobile ? "mobile" : "desktop",
   };
 
   const html = await renderer.renderToString(context)

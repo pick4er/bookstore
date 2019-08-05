@@ -1,7 +1,7 @@
 <template>
   <base-form-layout :onSubmit="handleSubmit">
     <template #header>
-      <h4>Добавить автора</h4>
+      <h4 :class="$style.header">Добавить автора</h4>
     </template>
     <template #inputs>
       <base-input 
@@ -48,7 +48,7 @@
     <template #submitButton>
       <base-button 
         type="submit"
-        :class="$style.formInput"
+        :class="[$style.formInput, $style.submitButton]"
       >Добавить автора</base-button>
     </template>
   </base-form-layout>
@@ -104,6 +104,17 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .header
+      margin-top x(20)
+      margin-bottom x(20)
+
+    .formInput + .formInput
+      margin-top x(20)
+
+    .submitButton
+      margin-top x(20)
+
   .formInput + .formInput
     margin-top x(30)
 

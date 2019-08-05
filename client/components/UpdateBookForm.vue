@@ -1,7 +1,7 @@
 <template>
   <base-form-layout :onSubmit="handleSubmit">
     <template #header>
-      <h4>Обновить книгу</h4>
+      <h4 :class="$style.header">Обновить книгу</h4>
     </template>
 
     <template #inputs>
@@ -52,6 +52,7 @@
         selectionKey="author_id"
         :onOpen="onAuthorsOpen"
         :onSelect="onAuthorSelect"
+        :direction="isMobile ? 'bottom' : 'right'"
       />
 
       <div 
@@ -173,6 +174,9 @@
       selectedBookValue() {
         return this.selectedBook.display_name;
       },
+      isMobile() {
+        return this.$store.state.isMobile;
+      }
     },
     watch: {
       selectedBook(nextBook, book) {
@@ -295,6 +299,28 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .header
+      margin-top x(20)
+      margin-bottom x(20)
+
+    .formInput + .formInput
+      margin-top x(20)
+
+    .submitButton
+      margin-top x(20)
+
+    .selectedBook
+      font-size x(14)
+
+    .selectedAuthorsList
+      ul
+        font-size x(14)
+
+        li
+          line-height x(16)
+
+
   .formInput + .formInput
     margin-top x(30)
 

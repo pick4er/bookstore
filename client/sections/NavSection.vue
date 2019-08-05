@@ -43,7 +43,7 @@
         >Войти</base-link>
       </div>
     </li>
-    <li>
+    <li :class="$style.cartRow">
       <div>
         <template v-if="isAdmin">
           <base-link
@@ -62,15 +62,15 @@
             @click="logout"
           >Выйти</base-link>
         </template>
-
-        <base-link 
-          v-if="isAuthed"
-          isRouter
-          to="/cart"
-          target="_self"
-          :modes="['accent', 'adjacentLeft']" 
-        >В корзине: {{ booksCount }} книг</base-link>
       </div>
+
+      <base-link 
+        v-if="isAuthed"
+        isRouter
+        to="/cart"
+        target="_self"
+        :modes="['accent', 'adjacentLeft']" 
+      >В корзине: {{ booksCount }} книг</base-link>
     </li>
   </ul>
 </template>
@@ -122,12 +122,30 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .list
+      display flex
+      flex-flow column-reverse
+      align-items flex-end
+      height auto
+      padding x(6)
+
+      li
+        width 100%
+
+    .cartRow
+      flexBetween()
+      margin-bottom x(2)
+
   .list
     flexBetween()
     height x(24)
     padding x(0)
     margin x(0)
     list-style none
+
+    .cartRow
+      display flex
 
   .slash
     accentFont()

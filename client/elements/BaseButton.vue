@@ -20,6 +20,11 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .button
+      height x(25)
+      font-size x(12)
+
   .button
     flexCenter()
     display inline-flex

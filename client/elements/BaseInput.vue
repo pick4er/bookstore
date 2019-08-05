@@ -100,6 +100,15 @@
 </script>
 
 <style lang="stylus" module>
+  html[data-layout="mobile"]
+    .label
+      font-size x(14)
+      margin-bottom x(5)
+
+    .input
+      height x(25)
+      font-size x(12)
+
   .wrap
     display block
 

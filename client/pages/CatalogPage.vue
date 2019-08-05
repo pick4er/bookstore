@@ -1,18 +1,24 @@
 <template>
-  <books-table :books="books" />
+  <books-list v-if="isMobile" :books="books" />
+  <books-table v-else :books="books" />
 </template>
 
 <script>
   import BooksTable from 'client/components/BooksTable';
+  import BooksList from 'client/components/BooksList';
 
   export default {
     name: 'catalog-page',
     components: {
       'books-table': BooksTable,
+      'books-list': BooksList,
     },
     computed: {
       books() {
         return this.$store.state.books;
+      },
+      isMobile() {
+        return this.$store.state.isMobile;
       },
     },
     serverPrefetch() {
