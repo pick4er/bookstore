@@ -89,8 +89,10 @@ export default {
       onError,
       onSuccess,
       url: 'keep_book',
-      book_id,
-      qty,
+      body: {
+        book_id,
+        qty,
+      },
     });
     if (isError) return;
 

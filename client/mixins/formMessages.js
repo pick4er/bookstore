@@ -14,6 +14,7 @@ export default {
   },
   methods: {
     showError(msg) {
+      this.clearSuccess();
       this.error = msg;
       this.errorTimerId = setTimeout(() => {
         this.error = null;

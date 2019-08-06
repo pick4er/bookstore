@@ -10,7 +10,7 @@
         type: String,
         default: 'noopener noreferrer',
       },
-      title: {
+      linkClass: {
         type: String,
         default: '',
       },
@@ -48,6 +48,7 @@
         return [
           this.$style.link,
           modeMappings,
+          this.linkClass,
         ];
       },
       element() {

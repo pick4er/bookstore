@@ -42,13 +42,15 @@
     </template>
 
     <template #messages>
-      <div v-if="error" :class="$style.error">
-        {{ error }}
-      </div>
+      <template>
+        <div v-if="success" :class="$style.success">
+          {{ success }}
+        </div>
 
-      <div v-else-if="success" :class="$style.success">
-        {{ success }}
-      </div>
+        <div v-else-if="error" :class="$style.error">
+          {{ error }}
+        </div>
+      </template>
     </template>
 
     <template #submitButton>
@@ -134,8 +136,6 @@
       resetForm() {
         this.qty = '';
         this.selectedBook = {};
-        this.error = '';
-        this.success = '';
       },
       onSelectedBookSelect() {
         this.selectedBook = {};

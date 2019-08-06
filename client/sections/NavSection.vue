@@ -9,12 +9,16 @@
         :modes="['accent']" 
       >Панель администратора</base-link>
       
-      <div v-else-if="isAuthed">
+      <div 
+        v-else-if="isAuthed"
+        :class="$style.userBlock"
+      >
         <base-link
           isRouter
           :to="`/user/${userRouteName}/edit`"
           target="self"
           :modes="['accent']"
+          :linkClass="$style.userName"
         >{{ displayName }}</base-link>
 
         <span :class="$style.slash">
@@ -44,13 +48,14 @@
       </div>
     </li>
     <li :class="$style.cartRow">
-      <div>
+      <div :class="$style.userBlock">
         <template v-if="isAdmin">
           <base-link
             isRouter
             :to="`/user/${userRouteName}/edit`"
             target="self"
             :modes="['accent']"
+            :linkClass="$style.userName"
           >{{ displayName }}</base-link>
 
           <span :class="$style.slash">
@@ -70,14 +75,22 @@
         to="/cart"
         target="_self"
         :modes="['accent', 'adjacentLeft']" 
-      >В корзине: {{ booksCount }} книг</base-link>
+        :title="booksCount"
+      >
+        В корзине: 
+        {{ booksCount | kkCount }} 
+        {{ booksCount | pluralizeCount }}
+      </base-link>
     </li>
   </ul>
 </template>
 
 <script>
   import BaseLink from 'client/elements/BaseLink';
+
   import { ADMIN_MODE } from 'helpers/constants';
+  import pluralizeWord from 'helpers/pluralizeWord';
+  import kkNumber from 'helpers/kkNumber';
 
   export default {
     name: 'nav-section',
@@ -100,6 +113,14 @@
       userRouteName() {
         return this.$store.getters.userRouteName;
       },
+    },
+    filters: {
+      pluralizeCount(value) {
+        return pluralizeWord('книг', ['а', 'и', ''], value);
+      },
+      kkCount(value) {
+        return kkNumber(value);
+      }
     },
     methods: {
       openRegisterModal() {
@@ -146,6 +167,14 @@
 
     .cartRow
       display flex
+
+  .userBlock
+    display flex
+
+    .userName
+      textEllipsis()
+      display block
+      max-width x(200)
 
   .slash
     accentFont()

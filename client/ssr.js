@@ -7,10 +7,6 @@ export default context => new Promise((resolve, reject) => {
   router.push(context.url);
   router.onReady(() => {
     context.rendered = () => {
-      console.log('6. --- context.rendered');
-      console.log('store.state:');
-      console.log(store.state);
-
       context.state = store.state;
     };
 

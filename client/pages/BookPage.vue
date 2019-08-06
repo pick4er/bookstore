@@ -28,8 +28,13 @@
         >Заказать</base-button>
       </div>
 
-      <div :class="$style.onhand">
-        В наличии: {{ book.onhand_qty }} книг
+      <div 
+        :class="$style.onhand"
+        :title="`${book.onhand_qty}`"
+      >
+        В наличии: 
+        {{ book.onhand_qty | kkOnhand }} 
+        {{ book.onhand_qty | pluralizeOnhand }}
       </div>
     </div>
   </div>
@@ -38,6 +43,9 @@
 <script>
   import BaseButton from 'client/elements/BaseButton';
   import BaseInput from 'client/elements/BaseInput';
+
+  import pluralizeWord from 'helpers/pluralizeWord';
+  import kkNumber from 'helpers/kkNumber';
 
   export default {
     name: 'catalog-page',
@@ -58,6 +66,14 @@
       bookId() {
         return this.$route.params.bookId
       }
+    },
+    filters: {
+      pluralizeOnhand(value) {
+        return pluralizeWord('книг', ['а', 'и', ''], value);
+      },
+      kkOnhand(value) {
+        return kkNumber(value);
+      },
     },
     watch: {
       '$store.state.book'(book) {
